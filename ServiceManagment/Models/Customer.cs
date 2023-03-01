@@ -1,5 +1,6 @@
 ﻿using ServiceManagment.Data.Enum;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServiceManagment.Models
 {
@@ -7,7 +8,7 @@ namespace ServiceManagment.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public string? NIP { get; set; }
         public DateTime UserAdded { get; set; }
         public string? Description { get; set; }
@@ -15,6 +16,5 @@ namespace ServiceManagment.Models
         public CustomerType CustomerType { get; set; }
         public Address Address { get; set; }
         public Contact Contact { get; set; }
-        public Payment Payment { get; set; }
     }
 }

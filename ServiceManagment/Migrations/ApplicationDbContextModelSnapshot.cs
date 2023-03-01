@@ -67,7 +67,6 @@ namespace ServiceManagment.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecondPhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -102,11 +101,7 @@ namespace ServiceManagment.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PaymentId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("UserAdded")
                         .HasColumnType("datetime2");
@@ -116,8 +111,6 @@ namespace ServiceManagment.Migrations
                     b.HasIndex("AddressId");
 
                     b.HasIndex("ContactId");
-
-                    b.HasIndex("PaymentId");
 
                     b.ToTable("Customers");
                 });
@@ -171,28 +164,6 @@ namespace ServiceManagment.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ServiceManagment.Models.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("AllPayments")
-                        .HasColumnType("float");
-
-                    b.Property<double>("CompletedPayments")
-                        .HasColumnType("float");
-
-                    b.Property<double>("OverduePayments")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Payments");
-                });
-
             modelBuilder.Entity("ServiceManagment.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -235,17 +206,9 @@ namespace ServiceManagment.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceManagment.Models.Payment", "Payment")
-                        .WithMany()
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Address");
 
                     b.Navigation("Contact");
-
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Equipment", b =>

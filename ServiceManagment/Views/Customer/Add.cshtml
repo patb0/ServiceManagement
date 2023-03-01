@@ -1,45 +1,58 @@
-﻿@model Customer
+﻿@using ServiceManagment.Data.Enum
+@model ServiceManagment.Models.Customer
 
 @{
 }
 
 <form method="post" asp-action="Add">
-  @*<div class="form-group">
-    <label asp-for="CustomerType">Customer group</label>
-    <input type="text" class="form-control" placeholder="FlatNumber">
-  </div>*@
   <div class="form-group">
-    <label asp-for="Name">Name</label>
-    <input type="text" class="form-control" placeholder="Name">
+    <label class="form-label">Customer Type</label>
+    <select asp-for="CustomerType" asp-items="Html.GetEnumSelectList<CustomerType>()" class="form-control">
+        <option>Select type</option>
+    </select>
   </div>
   <div class="form-group">
-    <label asp-for="NIP">NIP</label>
-    <input type="text" class="form-control" placeholder="NIP, if company">
+    <label class="form-label">Name</label>
+    <input type="text" class="form-control" asp-for="Name" placeholder="Name">
   </div>
   <div class="form-group">
-    <label asp-for="NIP">NIP</label>
-    <input type="text" class="form-control" placeholder="NIP, if company">
+    <label class="form-label">NIP</label>
+    <input type="text" class="form-control" asp-for="NIP" placeholder="NIP, if company">
   </div>
   <div class="form-group">
-    <label asp-for="Description">Description</label>
-    <input type="text" class="form-control" placeholder="Description">
+    <label class="form-label">Description</label>
+    <input type="text" class="form-control" asp-for="Description" placeholder="Description">
+  </div>
+  <br />
+  <div class="form-group">
+    <label class="form-label">City</label>
+    <input type="text" class="form-control" asp-for="Address.City" placeholder="City">
   </div>
   <div class="form-group">
-    <label asp-for="Address.City">City</label>
-    <input type="text" class="form-control" placeholder="City">
+    <label class="form-label">Street</label>
+    <input type="text" class="form-control" asp-for="Address.Street" placeholder="Street">
   </div>
   <div class="form-group">
-    <label asp-for="Address.Street">Street</label>
-    <input type="text" class="form-control" placeholder="Street">
+    <label class="form-label">Flat number</label>
+    <input type="text" class="form-control" asp-for="Address.FlatNumber" placeholder="Flat number">
   </div>
   <div class="form-group">
-    <label asp-for="Address.FlatNumber">Flat number</label>
-    <input type="text" class="form-control" placeholder="Flat number">
+    <label class="form-label">Postal code</label>
+    <input type="text" class="form-control" asp-for="Address.PostalCode" placeholder="Postal code">
+  </div>
+  <br />
+  <div class="form-group">
+    <label class="form-label">Phone number</label>
+    <input type="tel" class="form-control" asp-for="Contact.PhoneNumber" placeholder="Phone number">
   </div>
   <div class="form-group">
-    <label asp-for="Address.PostalCode">Postal code</label>
-    <input type="text" class="form-control" placeholder="Postal code">
+    <label class="form-label">Phone number</label>
+    <input type="tel" class="form-control" asp-for="Contact.SecondPhoneNumber" placeholder="Second phone number">
   </div>
-
+  <div class="form-group">
+    <label class="form-label">Email address</label>
+    <input type="email" class="form-control" asp-for="Contact.EmailAddress" placeholder="Email address">
+  </div>
+  <br />
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>

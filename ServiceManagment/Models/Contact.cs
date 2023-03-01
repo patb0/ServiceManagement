@@ -12,6 +12,6 @@ namespace ServiceManagment.Models
         [EmailAddress]
         public string EmailAddress { get; set; }
         [Phone]
-        public string SecondPhoneNumber { get; set; }
+        public string? SecondPhoneNumber { get; set; }
     }
 }

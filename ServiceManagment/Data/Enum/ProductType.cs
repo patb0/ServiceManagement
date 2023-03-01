@@ -4,6 +4,6 @@
     {
         Laptop,
         Monitor,
-        PC,
+        PC
     }
 }
