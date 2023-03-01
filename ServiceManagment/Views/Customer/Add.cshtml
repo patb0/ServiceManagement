@@ -1,0 +1,45 @@
+﻿@model Customer
+
+@{
+}
+
+<form method="post" asp-action="Add">
+  @*<div class="form-group">
+    <label asp-for="CustomerType">Customer group</label>
+    <input type="text" class="form-control" placeholder="FlatNumber">
+  </div>*@
+  <div class="form-group">
+    <label asp-for="Name">Name</label>
+    <input type="text" class="form-control" placeholder="Name">
+  </div>
+  <div class="form-group">
+    <label asp-for="NIP">NIP</label>
+    <input type="text" class="form-control" placeholder="NIP, if company">
+  </div>
+  <div class="form-group">
+    <label asp-for="NIP">NIP</label>
+    <input type="text" class="form-control" placeholder="NIP, if company">
+  </div>
+  <div class="form-group">
+    <label asp-for="Description">Description</label>
+    <input type="text" class="form-control" placeholder="Description">
+  </div>
+  <div class="form-group">
+    <label asp-for="Address.City">City</label>
+    <input type="text" class="form-control" placeholder="City">
+  </div>
+  <div class="form-group">
+    <label asp-for="Address.Street">Street</label>
+    <input type="text" class="form-control" placeholder="Street">
+  </div>
+  <div class="form-group">
+    <label asp-for="Address.FlatNumber">Flat number</label>
+    <input type="text" class="form-control" placeholder="Flat number">
+  </div>
+  <div class="form-group">
+    <label asp-for="Address.PostalCode">Postal code</label>
+    <input type="text" class="form-control" placeholder="Postal code">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
