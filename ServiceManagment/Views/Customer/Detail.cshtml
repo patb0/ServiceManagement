@@ -1,0 +1,60 @@
+﻿@model ServiceManagment.Models.Customer
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="form-group">
+    <label class="form-label">User ID</label>
+    <input type="text" class="form-control" asp-for="@Model.Id" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">User type</label>
+    <input type="text" class="form-control" asp-for="@Model.CustomerType" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">User group</label>
+    <input type="text" class="form-control" asp-for="@Model.CustomerGroup" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">Name</label>
+    <input type="text" class="form-control" asp-for="@Model.Name" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">NIP</label>
+    <input type="text" class="form-control" asp-for="@Model.NIP" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">Description</label>
+    <input type="text" class="form-control" asp-for="@Model.Description" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">Phone number</label>
+    <input type="text" class="form-control" asp-for="@Model.Contact.PhoneNumber" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">Email address</label>
+    <input type="text" class="form-control" asp-for="@Model.Contact.EmailAddress" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">Second phone number</label>
+    <input type="text" class="form-control" asp-for="@Model.Contact.SecondPhoneNumber" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">City</label>
+    <input type="text" class="form-control" asp-for="@Model.Address.City" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">Postal code</label>
+    <input type="text" class="form-control" asp-for="@Model.Address.PostalCode" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">Street</label>
+    <input type="text" class="form-control" asp-for="@Model.Address.Street" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label">Flat number</label>
+    <input type="text" class="form-control" asp-for="@Model.Address.FlatNumber" readonly>
+</div>
+

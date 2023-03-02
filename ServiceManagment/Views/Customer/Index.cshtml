@@ -1,6 +1,44 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<ServiceManagment.Models.Customer>
 @{
 }
 <h1>HELLO, WELCOME IN CUSTOMER INDEX VIEW!</h1>
+
+@foreach(var customer in Model)
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>User ID</th>
+				<th>Customer type</th>
+				<th>Name</th>
+				<th>Customer group</th>
+				<th>City</th>
+				<th>Phone number</th>
+				<th>Email address</th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th scope="row">@customer.Id</th>
+				<td>@customer.CustomerType.ToString()</td>
+				<td>@customer.Name</td>
+				<td>@customer.CustomerGroup.ToString()</td>
+				<td>@customer.Address.City</td>
+				<td>@customer.Contact.PhoneNumber</td>
+				<td>@customer.Contact.EmailAddress</td>
+				<td>
+					<a class="btn btn-primary" href="Customer/Detail/@customer.Id" role="button">Detail</a>
+				</td>
+				<td>
+					<a class="btn btn-primary" href="Customer/Edit/@customer.Id" role="button">Edit</a>
+				</td>
+				<td>
+					<a class="btn btn-danger" href="Customer/Delete/@customer.Id" role="button">Delete</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+}

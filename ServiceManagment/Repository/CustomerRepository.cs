@@ -28,7 +28,10 @@ namespace ServiceManagment.Repository
 
         public async Task<IEnumerable<Customer>> GetAllCustomers()
         {
-            return await _context.Customers.ToListAsync();
+            return await _context.Customers
+                .Include(i => i.Address)
+                .Include(j => j.Contact)
+                .ToListAsync();
         }
 
         public async Task<Customer?> GetCustomerById(int id)
