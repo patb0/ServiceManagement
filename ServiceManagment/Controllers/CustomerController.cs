@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
+using ServiceManagment.ViewModel;
 
 namespace ServiceManagment.Controllers
 {
     public class CustomerController : Controller
     {
-        private readonly ICustomerRepository _customerRepository;
+        private ICustomerRepository _customerRepository;
 
         public CustomerController(ICustomerRepository customerRepository)
         {
@@ -39,9 +40,29 @@ namespace ServiceManagment.Controllers
             return View(customerDetail);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            var customer = await _customerRepository.GetCustomerById(id);
+            return View(customer);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditCustomerViewModel viewCustomer)
+        {
+            var customer = await _customerRepository.GetCustomerById(id);
+            if(customer != null)
+            {
+                customer.Name = viewCustomer.Name;
+                customer.NIP = viewCustomer.NIP;
+                customer.Description = viewCustomer.Description;
+                customer.CustomerGroup = viewCustomer.CustomerGroup;
+                customer.CustomerType = viewCustomer.CustomerType;
+                customer.Address = viewCustomer.Address;
+                customer.Contact = viewCustomer.Contact;
+
+                _customerRepository.Update(customer);
+            }
             return View();
         }
 

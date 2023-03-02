@@ -1,0 +1,63 @@
+﻿@using ServiceManagment.Data.Enum
+@model ServiceManagment.Models.Customer
+
+@{
+}
+
+<form method="post" asp-action="Edit">
+    <div class="form-group">
+        <label class="form-label">User ID</label>
+        <input type="text" class="form-control" asp-for="@Model.Id"  readonly>
+    </div>
+    <div class="form-group">
+        <label class="form-label">User type</label>
+        <select asp-for="@Model.CustomerType" asp-items="Html.GetEnumSelectList<CustomerType>()" 
+        class="form-control" value=""></select>
+    </div>
+    <div class="form-group">
+        <label class="form-label">User group</label>
+        <select asp-for="@Model.CustomerGroup" asp-items="Html.GetEnumSelectList<CustomerGroup>()" 
+        class="form-control" value=""></select>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="@Model.Name">
+    </div>
+    <div class="form-group">
+        <label class="form-label">NIP</label>
+        <input type="text" class="form-control" asp-for="@Model.NIP">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Description</label>
+        <input type="text" class="form-control" asp-for="@Model.Description">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Phone number</label>
+        <input type="text" class="form-control" asp-for="@Model.Contact.PhoneNumber">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="text" class="form-control" asp-for="@Model.Contact.EmailAddress">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Second phone number</label>
+        <input type="text" class="form-control" asp-for="@Model.Contact.SecondPhoneNumber">
+    </div>
+    <div class="form-group">
+        <label class="form-label">City</label>
+        <input type="text" class="form-control" asp-for="@Model.Address.City">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Postal code</label>
+        <input type="text" class="form-control" asp-for="@Model.Address.PostalCode">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Street</label>
+        <input type="text" class="form-control" asp-for="@Model.Address.Street">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Flat number</label>
+        <input type="text" class="form-control" asp-for="@Model.Address.FlatNumber">
+    </div>
+    <button type="submit" class="btn btn-primary">Save changes</button>
+</form>

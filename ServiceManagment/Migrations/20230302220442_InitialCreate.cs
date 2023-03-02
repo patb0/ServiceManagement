@@ -51,7 +51,9 @@ namespace ServiceManagment.Migrations
                     ProductType = table.Column<int>(type: "int", nullable: false),
                     ProducerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fault = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,33 +93,15 @@ namespace ServiceManagment.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Equipments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Fault = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Equipments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Equipments_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderStatus = table.Column<int>(type: "int", nullable: false),
+                    OrderAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
-                    EquipmentId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,9 +113,9 @@ namespace ServiceManagment.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orders_Equipments_EquipmentId",
-                        column: x => x.EquipmentId,
-                        principalTable: "Equipments",
+                        name: "FK_Orders_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -147,19 +131,14 @@ namespace ServiceManagment.Migrations
                 column: "ContactId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equipments_ProductId",
-                table: "Equipments",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",
                 table: "Orders",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_EquipmentId",
+                name: "IX_Orders_ProductId",
                 table: "Orders",
-                column: "EquipmentId");
+                column: "ProductId");
         }
 
         /// <inheritdoc />
@@ -172,16 +151,13 @@ namespace ServiceManagment.Migrations
                 name: "Customers");
 
             migrationBuilder.DropTable(
-                name: "Equipments");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Contacts");
-
-            migrationBuilder.DropTable(
-                name: "Products");
         }
     }
 }

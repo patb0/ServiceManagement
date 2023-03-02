@@ -1,13 +1,10 @@
 ﻿using ServiceManagment.Data.Enum;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using ServiceManagment.Models;
 
-namespace ServiceManagment.Models
+namespace ServiceManagment.ViewModel
 {
-    public class Customer
+    public class EditCustomerViewModel
     {
-        [Key]
-        public int Id { get; set; }
         public string? Name { get; set; }
         public string? NIP { get; set; }
         public DateTime UserAdded { get; set; }
@@ -16,6 +13,5 @@ namespace ServiceManagment.Models
         public CustomerType CustomerType { get; set; }
         public Address Address { get; set; }
         public Contact Contact { get; set; }
-        public ICollection<Order>? Orders { get; set; } 
     }
 }

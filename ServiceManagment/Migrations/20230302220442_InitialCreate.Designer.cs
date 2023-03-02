@@ -12,7 +12,7 @@ using ServiceManagment.Data;
 namespace ServiceManagment.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230301210858_InitialCreate")]
+    [Migration("20230302220442_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -118,7 +118,36 @@ namespace ServiceManagment.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("ServiceManagment.Models.Equipment", b =>
+            modelBuilder.Entity("ServiceManagment.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OrderAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("ServiceManagment.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,47 +162,6 @@ namespace ServiceManagment.Migrations
                     b.Property<string>("Fault")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Equipments");
-                });
-
-            modelBuilder.Entity("ServiceManagment.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EquipmentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("EquipmentId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("ServiceManagment.Models.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -214,32 +202,33 @@ namespace ServiceManagment.Migrations
                     b.Navigation("Contact");
                 });
 
-            modelBuilder.Entity("ServiceManagment.Models.Equipment", b =>
-                {
-                    b.HasOne("ServiceManagment.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("ServiceManagment.Models.Order", b =>
                 {
                     b.HasOne("ServiceManagment.Models.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceManagment.Models.Equipment", "Equipment")
-                        .WithMany()
-                        .HasForeignKey("EquipmentId")
+                    b.HasOne("ServiceManagment.Models.Product", "Product")
+                        .WithMany("Orders")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Customer");
 
-                    b.Navigation("Equipment");
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ServiceManagment.Models.Customer", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("ServiceManagment.Models.Product", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

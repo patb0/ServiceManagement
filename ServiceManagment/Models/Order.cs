@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ServiceManagment.Data.Enum;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServiceManagment.Models
@@ -7,13 +8,15 @@ namespace ServiceManagment.Models
     {
         [Key]
         public int Id { get; set; }
+        public OrderStatus OrderStatus { get; set; }
+        public DateTime OrderAdded { get; set; }
 
-        [ForeignKey("CustomerId")]
+        [ForeignKey("Customer")]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
-        [ForeignKey("EquipmentId")]
-        public int EquipmentId { get; set; }
-        public Equipment Equipment { get; set; }
+        [ForeignKey("Product")]
+        public int ProductId { get; set; }
+        public Product Product { get; set; }
     }
 }

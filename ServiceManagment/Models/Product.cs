@@ -11,5 +11,7 @@ namespace ServiceManagment.Models
         public string ProducerName { get; set; }
         public string Model { get; set; }
         public string SerialNumber { get; set; }
+        public string Fault { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace ServiceManagment.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
         public CustomerRepository(ApplicationDbContext context)
         {
