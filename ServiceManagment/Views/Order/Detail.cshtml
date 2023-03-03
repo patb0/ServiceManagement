@@ -1,0 +1,51 @@
+﻿@using ServiceManagment.Data.Enum
+@model ServiceManagment.Models.Order
+
+@{
+}
+
+<a class="btn btn-danger" href="/Order/Edit/@Model.Id" role="button">Edit order</a>
+<a class="btn btn-danger" href="/Customer/Detail/@Model.CustomerId" role="button">Show customer profile</a>
+
+<br />
+<div class="form-group">
+    <label class="form-label">ID</label>
+    <input type="text" class="form-control" asp-for="@Model.Id" readonly/>
+</div>
+<div class="form-group">
+    <label class="form-label">Order added</label>
+    <input type="date" class="form-control" asp-for="@Model.OrderAdded" readonly/>
+</div>
+<div class="form-group">
+    <label class="form-label">Status</label>
+    <input type="text" class="form-control" asp-for="@Model.OrderStatus" readonly/>
+</div>
+<div class="form-group">
+    <label class="form-label">Owner</label>
+    <input type="text" class="form-control" asp-for="@Model.Customer.Name" readonly/>
+</div>
+<div class="form-group">
+    <label class="form-label">Type</label>
+    <input type="text" class="form-control" asp-for="@Model.Product.ProductType" readonly/>
+</div>
+<div class="form-group">
+    <label class="form-label">Name</label>
+    <input type="text" class="form-control" asp-for="@Model.Product.ProducerName" readonly/>
+</div>
+<div class="form-group">
+    <label class="form-label">Model</label>
+    <input type="text" class="form-control" asp-for="@Model.Product.Model" readonly/>
+</div>
+<div class="form-group">
+    <label class="form-label">Serial number</label>
+    <input type="text" class="form-control" asp-for="@Model.Product.SerialNumber" readonly/>
+</div>
+<div class="form-group">
+    <label class="form-label">Fault</label>
+    <input type="text" class="form-control" asp-for="@Model.Product.Fault" readonly/>
+</div>
+<div class="form-group">
+    <label class="form-label">Description</label>
+    <input type="text" class="form-control" asp-for="@Model.Product.Description" readonly/>
+</div>
+

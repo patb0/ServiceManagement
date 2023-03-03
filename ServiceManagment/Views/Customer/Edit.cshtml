@@ -10,6 +10,10 @@
         <input type="text" class="form-control" asp-for="@Model.Id"  readonly>
     </div>
     <div class="form-group">
+        <label class="form-label">User added</label>
+        <input type="text" class="form-control" asp-for="@Model.UserAdded.ToString()" readonly>
+    </div>
+    <div class="form-group">
         <label class="form-label">User type</label>
         <select asp-for="@Model.CustomerType" asp-items="Html.GetEnumSelectList<CustomerType>()" 
         class="form-control" value=""></select>

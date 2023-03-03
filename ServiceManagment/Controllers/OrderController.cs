@@ -23,12 +23,6 @@ namespace ServiceManagment.Controllers
         [HttpGet]
         public IActionResult Create(int id)
         {
-            //var orderViewModel = new CreateOrderViewModel();
-            //if (Int32.TryParse(HttpContext.User.GetUserId(), out int currentlyCustomerId))
-            //{
-            //    orderViewModel.CustomerId = currentlyCustomerId;
-            //}
-
             var orderViewModel = new CreateOrderViewModel { CustomerId = id };
             
             return View(orderViewModel);
@@ -56,6 +50,46 @@ namespace ServiceManagment.Controllers
             _orderRepository.Add(order);
 
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Detail(int id)
+        {
+            var order = await _orderRepository.GetOrderById(id);
+
+            return View(order);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var order = await _orderRepository.GetOrderById(id);
+            return View(order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditOrderViewModel orderViewModel)
+        {
+            var order = await _orderRepository.GetOrderById(id);
+            if(order != null)
+            {
+                order.OrderStatus = orderViewModel.OrderStatus;
+                order.OrderAdded = orderViewModel.OrderAdded;
+                order.CustomerId = orderViewModel.CustomerId;
+                order.Customer = orderViewModel.Customer;
+                order.ProductId = orderViewModel.ProductId;
+                order.Product = orderViewModel.Product;
+                _orderRepository.Update(order);
+                //return Index
+            }
+            //return Error
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> ListOrdersByStatus (string status)
+        {
+            var orders = await _orderRepository.GetAllOrdersByStatus(status);
+
+            return View(orders);
         }
     }
 }

@@ -53,5 +53,6 @@
     <input type="email" class="form-control" asp-for="Contact.EmailAddress" placeholder="Email address">
   </div>
   <br />
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary" name="operation" value="0">Only add customer</button>
+  <button type="submit" class="btn btn-danger" name="operation" value="1">Add customer and order</button>
 </form>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServiceManagment.Common;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
 using ServiceManagment.ViewModel;
@@ -27,11 +28,18 @@ namespace ServiceManagment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Customer customer)
+        public async Task<IActionResult> Add(Customer customer, int operation)
         {
             customer.UserAdded = DateTime.Now;
             _customerRepository.Add(customer);
-            return RedirectToAction("Index");
+
+
+            if(operation == ((uint)OrderConstans.ONLY_ADD_CUSTOMER))
+            {
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Create", "Order", new {@id = customer.Id});
         }
 
         public async Task<IActionResult> Detail(int id)

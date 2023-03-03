@@ -34,6 +34,15 @@ namespace ServiceManagment.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Order>> GetAllOrdersByStatus(string status)
+        {
+            return await _context.Orders
+                .Include(i => i.Customer)
+                .Include(j => j.Product)
+                .Where(x => x.OrderStatus.Equals(status))
+                .ToListAsync();
+        }
+
         public async Task<Order?> GetOrderById(int id)
         {
             return await _context.Orders
