@@ -82,7 +82,7 @@ namespace ServiceManagment.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AddressId")
+                    b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
                     b.Property<int>("ContactId")
@@ -101,6 +101,7 @@ namespace ServiceManagment.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UserAdded")
@@ -153,7 +154,6 @@ namespace ServiceManagment.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Fault")
@@ -184,9 +184,7 @@ namespace ServiceManagment.Migrations
                 {
                     b.HasOne("ServiceManagment.Models.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AddressId");
 
                     b.HasOne("ServiceManagment.Models.Contact", "Contact")
                         .WithMany()
@@ -208,7 +206,7 @@ namespace ServiceManagment.Migrations
                         .IsRequired();
 
                     b.HasOne("ServiceManagment.Models.Product", "Product")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -219,11 +217,6 @@ namespace ServiceManagment.Migrations
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Customer", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("ServiceManagment.Models.Product", b =>
                 {
                     b.Navigation("Orders");
                 });

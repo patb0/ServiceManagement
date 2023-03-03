@@ -76,5 +76,12 @@ namespace ServiceManagment.Controllers
             }
             return View("Index");
         }
+
+        public async Task<IActionResult> Orders(int id)
+        {
+            var userOrders = await _customerRepository.GetAllOrdersByCustomerId(id);
+
+            return View(userOrders);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
+using ServiceManagment.ViewModel;
 
 namespace ServiceManagment.Controllers
 {
@@ -13,24 +14,47 @@ namespace ServiceManagment.Controllers
             _orderRepository = orderRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var orders = _orderRepository.GetAllOrders();
-            return View();
+            var orders = await _orderRepository.GetAllOrders();
+            return View(orders);
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult Create(int id)
         {
-            return View();
+            //var orderViewModel = new CreateOrderViewModel();
+            //if (Int32.TryParse(HttpContext.User.GetUserId(), out int currentlyCustomerId))
+            //{
+            //    orderViewModel.CustomerId = currentlyCustomerId;
+            //}
+
+            var orderViewModel = new CreateOrderViewModel { CustomerId = id };
+            
+            return View(orderViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Order order)
+        public async Task<IActionResult> Create(int id, CreateOrderViewModel orderViewModel)
         {
-            order.OrderAdded = DateTime.Now;
-            order.OrderStatus = Data.Enum.OrderStatus.New;
+            var order = new Order()
+            {
+                OrderStatus = Data.Enum.OrderStatus.New,
+                OrderAdded = DateTime.Now,
+                CustomerId = id,
+                ProductId = orderViewModel.ProductId,
+                Product = new Product
+                {
+                    ProductType = orderViewModel.Product.ProductType,
+                    ProducerName = orderViewModel.Product.ProducerName,
+                    Model = orderViewModel.Product.Model,
+                    SerialNumber = orderViewModel.Product.SerialNumber,
+                    Fault = orderViewModel.Product.Fault,
+                    Description = orderViewModel.Product.Description,
+                }
+            };
             _orderRepository.Add(order);
+
             return RedirectToAction("Index");
         }
     }

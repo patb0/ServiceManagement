@@ -5,6 +5,7 @@
 *@
 @{
 }
+
 <div class="form-group">
     <label class="form-label">User ID</label>
     <input type="text" class="form-control" asp-for="@Model.Id" readonly>
@@ -57,4 +58,5 @@
     <label class="form-label">Flat number</label>
     <input type="text" class="form-control" asp-for="@Model.Address.FlatNumber" readonly>
 </div>
+<a class="btn btn-danger" href="/Customer/Orders/@Model.Id" role="button">Show orders</a>
 

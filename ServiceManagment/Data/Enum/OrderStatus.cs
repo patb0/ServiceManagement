@@ -1,9 +1,12 @@
-﻿namespace ServiceManagment.Data.Enum
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ServiceManagment.Data.Enum
 {
     public enum OrderStatus
     {
-        Finished,
+        New,
+        [Display(Name = "In progress")]
         InProgress,
-        New
+        Finished
     }
 }

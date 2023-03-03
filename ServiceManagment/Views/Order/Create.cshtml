@@ -1,10 +1,14 @@
 ﻿@using ServiceManagment.Data.Enum
-@model ServiceManagment.Models.Order
+@model ServiceManagment.ViewModel.CreateOrderViewModel
 
 @{
 }
 
-<form method="post" asp-action="Add">
+<form method="post" asp-action="Create">
+    <div class="form-group">
+        <label class="form-label">Product type</label>
+        <select asp-for="Product.ProductType" asp-items="Html.GetEnumSelectList<ProductType>()"></select>
+    </div>
     <div class="form-group">
         <label class="form-label">Producer name</label>
         <input type="text" asp-for="Product.ProducerName" class="form-control" placeholder="Producer name" />
@@ -18,12 +22,12 @@
         <input type="text" asp-for="Product.SerialNumber" class="form-control" placeholder="Serial number" />
     </div>
     <div class="form-group">
-        <label class="form-label">Equipment fault</label>
+        <label class="form-label">Product fault</label>
         <input type="text" asp-for="Product.Fault" class="form-control" placeholder="Equipment fault" />
     </div>
     <div class="form-group">
-        <label class="form-label">Equipment description</label>
+        <label class="form-label">Product description</label>
         <input type="text" asp-for="Product.Description" class="form-control" placeholder="Equipment description" />
     </div>
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="submit" class="btn btn-primary">Create order</button>
 </form>

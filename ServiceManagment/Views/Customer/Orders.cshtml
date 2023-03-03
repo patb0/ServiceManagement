@@ -1,36 +1,29 @@
 ﻿@model IEnumerable<ServiceManagment.Models.Order>
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
 }
-
-<h1>LIST OF ALL ORDERS</h1>
-
 
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">ID</th>
             <th scope="col">Order status</th>
             <th scope="col">Owner</th>
             <th scope="col">Product type</th>
             <th scope="col">Product name</th>
-            <th scope="col">Product fault</th>
+            <th scope="col">Added</th>
+
         </tr>
     </thead>
     <tbody>
         @foreach(var order in Model)
         {   
             <tr>
-                <th scope="row">@order.Id</th>
                 <td>@order.OrderStatus.ToString()</td>
                 <td>@order.Customer.Name</td>
                 <td>@order.Product.ProductType.ToString()</td>
                 <td>@order.Product.ProducerName @order.Product.Model</td>
-                <td>@order.Product.Fault</td>
-            </tr>   
+                <td>@order.OrderAdded</td>
+            </tr>
         }
     </tbody>
 </table>
