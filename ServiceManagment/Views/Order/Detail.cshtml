@@ -3,9 +3,11 @@
 
 @{
 }
+<a type="button" class="btn btn-danger" asp-controller="Order"
+    asp-action="Edit" asp-route-id="@Model.Id">Edit order</a>
 
-<a class="btn btn-danger" href="/Order/Edit/@Model.Id" role="button">Edit order</a>
-<a class="btn btn-danger" href="/Customer/Detail/@Model.CustomerId" role="button">Show customer profile</a>
+<a type="button" class="btn btn-danger" asp-controller="Customer"
+    asp-action="Detail" asp-route-id="@Model.CustomerId">Show customer profile</a>
 
 <br />
 <div class="form-group">

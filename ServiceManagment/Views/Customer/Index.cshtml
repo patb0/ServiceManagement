@@ -7,6 +7,7 @@
 		<thead>
 			<tr>
 				<th>User ID</th>
+				<th>Add</th>
 				<th>Customer type</th>
 				<th>Name</th>
 				<th>Customer group</th>
@@ -25,23 +26,28 @@
 			{		
 				<tr>
 					<th scope="row">@customer.Id</th>
-					<td>@customer.CustomerType.ToString()</td>
+					<td>@customer.UserAdded</td>
+					<td>@customer.CustomerType</td>
 					<td>@customer.Name</td>
-					<td>@customer.CustomerGroup.ToString()</td>
+					<td>@customer.CustomerGroup</td>
 					<td>@customer.Address.City</td>
 					<td>@customer.Contact.PhoneNumber</td>
 					<td>@customer.Contact.EmailAddress</td>
 					<td>
-						<a class="btn btn-primary" href="Customer/Detail/@customer.Id" role="button">Detail</a>
+						<a type="button" class="btn btn-primary" asp-controller="Customer"
+							asp-action="Detail" asp-route-id="@customer.Id">Detail</a>
 					</td>
 					<td>
-						<a class="btn btn-primary" href="Customer/Edit/@customer.Id" role="button">Edit</a>
+						<a type="button" class="btn btn-primary" asp-controller="Customer"
+							asp-action="Edit" asp-route-id="@customer.Id">Edit</a>
 					</td>
 					<td>
-						<a class="btn btn-danger" href="Customer/Delete/@customer.Id" role="button">Delete</a>
+						<a type="button" class="btn btn-danger" asp-controller="Customer"
+							asp-action="Delete" asp-route-id="@customer.Id">Delete</a>
 					</td>
 					<td>
-						<a class="btn btn-danger" href="Order/Create/@customer.Id" role="button">Create order</a>
+						<a type="button" class="btn btn-danger" asp-controller="Order"
+							asp-action="Create" asp-route-id="@customer.Id">Create order</a>
 					</td>
 				</tr>
 			}

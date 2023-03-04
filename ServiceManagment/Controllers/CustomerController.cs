@@ -8,7 +8,7 @@ namespace ServiceManagment.Controllers
 {
     public class CustomerController : Controller
     {
-        private ICustomerRepository _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
 
         public CustomerController(ICustomerRepository customerRepository)
         {
@@ -45,6 +45,7 @@ namespace ServiceManagment.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             var customerDetail = await _customerRepository.GetCustomerById(id);
+
             return View(customerDetail);
         }
 
@@ -52,25 +53,27 @@ namespace ServiceManagment.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var customer = await _customerRepository.GetCustomerById(id);
+
             return View(customer);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditCustomerViewModel viewCustomer)
         {
-            var customer = await _customerRepository.GetCustomerById(id);
-            if(customer != null)
+            var customer = new Customer
             {
-                customer.Name = viewCustomer.Name;
-                customer.NIP = viewCustomer.NIP;
-                customer.Description = viewCustomer.Description;
-                customer.CustomerGroup = viewCustomer.CustomerGroup;
-                customer.CustomerType = viewCustomer.CustomerType;
-                customer.Address = viewCustomer.Address;
-                customer.Contact = viewCustomer.Contact;
+                Id = id,
+                Name = viewCustomer.Name,
+                NIP = viewCustomer.NIP,
+                Description = viewCustomer.Description,
+                CustomerGroup = viewCustomer.CustomerGroup,
+                CustomerType = viewCustomer.CustomerType,
+                Address = viewCustomer.Address,
+                Contact = viewCustomer.Contact,
+            };
 
-                _customerRepository.Update(customer);
-            }
+            _customerRepository.Update(customer);
+
             return View();
         }
 

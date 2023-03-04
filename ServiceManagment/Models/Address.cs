@@ -9,7 +9,7 @@ namespace ServiceManagment.Models
         public int Id { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
-        public string FlatNumber { get; set; }
+        public string FlatNumber { get; set; } 
         public int PostalCode { get; set; }
     }
 }

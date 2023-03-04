@@ -6,6 +6,7 @@ namespace ServiceManagment.ViewModel
 {
     public class EditOrderViewModel
     {
+        public int Id { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public DateTime OrderAdded { get; set; }
 

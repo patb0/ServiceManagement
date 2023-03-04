@@ -17,6 +17,7 @@ namespace ServiceManagment.Controllers
         public async Task<IActionResult> Index()
         {
             var orders = await _orderRepository.GetAllOrders();
+
             return View(orders);
         }
 
@@ -63,24 +64,29 @@ namespace ServiceManagment.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var order = await _orderRepository.GetOrderById(id);
+
             return View(order);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditOrderViewModel orderViewModel)
         {
+            //add validation
             var order = await _orderRepository.GetOrderById(id);
             if(order != null)
             {
                 order.OrderStatus = orderViewModel.OrderStatus;
-                order.OrderAdded = orderViewModel.OrderAdded;
-                order.CustomerId = orderViewModel.CustomerId;
-                order.Customer = orderViewModel.Customer;
-                order.ProductId = orderViewModel.ProductId;
-                order.Product = orderViewModel.Product;
+                order.Product.ProductType = orderViewModel.Product.ProductType;
+                order.Product.Model = orderViewModel.Product.Model;
+                order.Product.SerialNumber = orderViewModel.Product.SerialNumber;
+                order.Product.Fault = orderViewModel.Product.Fault;
+                order.Product.Description = orderViewModel.Product.Description;
+
                 _orderRepository.Update(order);
-                //return Index
             }
+
+            //return Index
+
             //return Error
             return RedirectToAction("Index");
         }

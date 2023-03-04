@@ -14,7 +14,7 @@ namespace ServiceManagment.Models
         public string? Description { get; set; }
         public CustomerGroup CustomerGroup { get; set; }
         public CustomerType CustomerType { get; set; }
-        public Address? Address { get; set; }
+        public Address Address { get; set; }
         public Contact Contact { get; set; }
         public ICollection<Order>? Orders { get; set; } 
     }

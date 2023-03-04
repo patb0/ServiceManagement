@@ -11,17 +11,19 @@
     </div>
     <div class="form-group">
         <label class="form-label">User added</label>
-        <input type="text" class="form-control" asp-for="@Model.UserAdded.ToString()" readonly>
+        <input type="date" class="form-control" asp-for="@Model.UserAdded" readonly>
     </div>
     <div class="form-group">
         <label class="form-label">User type</label>
-        <select asp-for="@Model.CustomerType" asp-items="Html.GetEnumSelectList<CustomerType>()" 
-        class="form-control" value=""></select>
+        <select asp-for="@Model.CustomerType" asp-items="Html.GetEnumSelectList<CustomerType>()" class="form-control">
+
+        </select>
     </div>
     <div class="form-group">
         <label class="form-label">User group</label>
-        <select asp-for="@Model.CustomerGroup" asp-items="Html.GetEnumSelectList<CustomerGroup>()" 
-        class="form-control" value=""></select>
+        <select asp-for="@Model.CustomerGroup" asp-items="Html.GetEnumSelectList<CustomerGroup>()" class="form-control">
+
+        </select>
     </div>
     <div class="form-group">
         <label class="form-label">Name</label>

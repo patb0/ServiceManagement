@@ -11,6 +11,10 @@
     <input type="text" class="form-control" asp-for="@Model.Id" readonly>
 </div>
 <div class="form-group">
+    <label class="form-label">Added</label>
+    <input type="text" class="form-control" asp-for="@Model.UserAdded" readonly>
+</div>
+<div class="form-group">
     <label class="form-label">User type</label>
     <input type="text" class="form-control" asp-for="@Model.CustomerType" readonly>
 </div>
@@ -59,5 +63,6 @@
     <input type="text" class="form-control" asp-for="@Model.Address.FlatNumber" readonly>
 </div>
 <br />
-<a class="btn btn-danger" href="/Customer/Orders/@Model.Id" role="button">Show orders</a>
+<a type="button" class="btn btn-danger" asp-controller="Customer"
+    asp-action="Orders" asp-route-id="@Model.Id">Show orders</a>
 

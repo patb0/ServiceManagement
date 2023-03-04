@@ -72,7 +72,7 @@ namespace ServiceManagment.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerGroup = table.Column<int>(type: "int", nullable: false),
                     CustomerType = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: true),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
                     ContactId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -82,7 +82,8 @@ namespace ServiceManagment.Migrations
                         name: "FK_Customers_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Customers_Contacts_ContactId",
                         column: x => x.ContactId,

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceManagment.Data;
+using ServiceManagment.Data.Enum;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
 
@@ -31,6 +32,7 @@ namespace ServiceManagment.Repository
             return await _context.Orders
                 .Include(i => i.Customer)
                 .Include(j => j.Product)
+                .OrderBy(x => x.OrderStatus)
                 .ToListAsync();
         }
 
@@ -39,7 +41,7 @@ namespace ServiceManagment.Repository
             return await _context.Orders
                 .Include(i => i.Customer)
                 .Include(j => j.Product)
-                .Where(x => x.OrderStatus.Equals(status))
+                .Where(x => x.OrderStatus == (OrderStatus)Enum.Parse(typeof(OrderStatus), status))
                 .ToListAsync();
         }
 
