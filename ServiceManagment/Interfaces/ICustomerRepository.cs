@@ -7,6 +7,7 @@ namespace ServiceManagment.Interfaces
         Task<IEnumerable<Customer>> GetAllCustomers();
         Task<Customer> GetCustomerById(int id);
         Task<IEnumerable<Order>> GetAllOrdersByCustomerId(int id);
+        Task<IEnumerable<Order>> GetAllPaymentByCustomerId(int id);
         bool Add(Customer customer);
         bool Update(Customer customer);
         bool Delete(Customer customer);

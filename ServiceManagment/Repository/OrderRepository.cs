@@ -32,6 +32,7 @@ namespace ServiceManagment.Repository
             return await _context.Orders
                 .Include(i => i.Customer)
                 .Include(j => j.Product)
+                .Include(k => k.Payment)
                 .OrderBy(x => x.OrderStatus)
                 .ToListAsync();
         }
@@ -45,11 +46,19 @@ namespace ServiceManagment.Repository
                 .ToListAsync();
         }
 
+        public async Task<Order> GetPaymentByOrderId(int id)
+        {
+            return await _context.Orders
+                .Include(i => i.Payment)
+                .FirstOrDefaultAsync(x=> x.Id == id);
+        }
+
         public async Task<Order?> GetOrderById(int id)
         {
             return await _context.Orders
                 .Include(i => i.Customer)
                 .Include(j => j.Product)
+                .Include(k => k.Payment)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 

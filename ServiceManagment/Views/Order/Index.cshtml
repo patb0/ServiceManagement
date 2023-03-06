@@ -29,6 +29,7 @@
             <th scope="col">Product type</th>
             <th scope="col">Product name</th>
             <th scope="col">Product fault</th>
+            <th scope="col">To pay</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -42,6 +43,7 @@
                 <td>@order.Product.ProductType</td>
                 <td>@order.Product.ProducerName @order.Product.Model</td>
                 <td>@order.Product.Fault</td>
+                <td>@order.Payment.ToPay ,-</td>
                 <td>
                     <a type="button" class="btn btn-primary" asp-controller="Order"
                         asp-action="Detail" asp-route-id="@order.Id">Detail</a>

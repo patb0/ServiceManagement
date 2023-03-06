@@ -94,5 +94,18 @@ namespace ServiceManagment.Controllers
 
             return View(userOrders);
         }
+
+        public async Task<IActionResult> Payment(int id)
+        {
+            double? userToPay = 0;
+            var userPayments = await _customerRepository.GetAllPaymentByCustomerId(id);
+
+            foreach(var payment in userPayments)
+            {
+                userToPay += payment.Payment.ToPay;
+            }
+
+            return View(userToPay);
+        }
     }
 }

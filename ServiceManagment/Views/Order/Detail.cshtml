@@ -9,10 +9,16 @@
 <a type="button" class="btn btn-danger" asp-controller="Customer"
     asp-action="Detail" asp-route-id="@Model.CustomerId">Show customer profile</a>
 
+<a type="button" class="btn btn-danger" asp-controller="Order"
+    asp-action="DetailOrderPayment" asp-route-id="@Model.Id">Payments</a>
 <br />
 <div class="form-group">
     <label class="form-label">ID</label>
     <input type="text" class="form-control" asp-for="@Model.Id" readonly/>
+</div>
+<div class="form-group">
+    <label class="form-label">All cost</label>
+    <input type="number" class="form-control" asp-for="@Model.Payment.ToPay" readonly/>
 </div>
 <div class="form-group">
     <label class="form-label">Order added</label>

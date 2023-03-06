@@ -1,0 +1,23 @@
+﻿@model ServiceManagment.Models.Order
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>PAYMENT VIEW</h1>
+<a type="button" class="btn btn-danger" asp-controller="Order"
+    asp-action="EditOrderPayment" asp-route-id="@Model.Id">Edit</a>
+
+<div class="form-group">
+    <label class="form-label">Payment ID</label>
+    <input class="form-control" asp-for="@Model.PaymentId" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label" >Paid</label>
+    <input class="form-control" asp-for="@Model.Payment.Paid" readonly>
+</div>
+<div class="form-group">
+    <label class="form-label" >To Pay</label>
+    <input class="form-control" asp-for="@Model.Payment.ToPay" readonly>
+</div>

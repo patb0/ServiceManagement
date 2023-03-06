@@ -39,6 +39,15 @@ namespace ServiceManagment.Repository
             return await _context.Orders
                 .Include(i => i.Product)
                 .Include(j => j.Customer)
+                .Include(k => k.Payment)
+                .Where(x => x.CustomerId == id)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Order>> GetAllPaymentByCustomerId(int id)
+        {
+            return await _context.Orders
+                .Include(i => i.Payment)
                 .Where(x => x.CustomerId == id)
                 .ToListAsync();
         }

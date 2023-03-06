@@ -18,5 +18,9 @@ namespace ServiceManagment.Models
         [ForeignKey("Product")]
         public int ProductId { get; set; }
         public Product Product { get; set; }
+
+        [ForeignKey("Payment")]
+        public int PaymentId { get; set; }
+        public Payment Payment { get; set; }
     }
 }
