@@ -7,7 +7,7 @@ namespace ServiceManagment.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public CustomerRepository(ApplicationDbContext context)
         {
@@ -26,7 +26,7 @@ namespace ServiceManagment.Repository
             return Save();
         }
 
-        public async Task<IEnumerable<Customer>> GetAllCustomers()
+        public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
             return await _context.Customers
                 .Include(i => i.Address)
@@ -34,7 +34,19 @@ namespace ServiceManagment.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Order>> GetAllOrdersByCustomerId(int id)
+        public async Task<IEnumerable<Customer>> GetAllCustomersBySearchKeyAsync(string searchKey)
+        {
+            return await _context.Customers
+                .Include(i => i.Address)
+                .Include(j => j.Contact)
+                .Where(x => x.Name.Contains(searchKey)
+                || x.Address.City.Contains(searchKey)
+                || x.Contact.PhoneNumber.Contains(searchKey)
+                || x.Contact.EmailAddress.Contains(searchKey))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Order>> GetAllOrdersByCustomerIdAsync(int id)
         {
             return await _context.Orders
                 .Include(i => i.Product)
@@ -44,7 +56,7 @@ namespace ServiceManagment.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Order>> GetAllPaymentByCustomerId(int id)
+        public async Task<IEnumerable<Order>> GetAllPaymentByCustomerIdAsync(int id)
         {
             return await _context.Orders
                 .Include(i => i.Payment)
@@ -52,7 +64,7 @@ namespace ServiceManagment.Repository
                 .ToListAsync();
         }
 
-        public async Task<Customer?> GetCustomerById(int id)
+        public async Task<Customer> GetCustomerByIdAsync(int id)
         {
             return await _context.Customers
                 .Include(i => i.Address)

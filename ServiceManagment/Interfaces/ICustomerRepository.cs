@@ -4,10 +4,11 @@ namespace ServiceManagment.Interfaces
 {
     public interface ICustomerRepository
     {
-        Task<IEnumerable<Customer>> GetAllCustomers();
-        Task<Customer> GetCustomerById(int id);
-        Task<IEnumerable<Order>> GetAllOrdersByCustomerId(int id);
-        Task<IEnumerable<Order>> GetAllPaymentByCustomerId(int id);
+        Task<IEnumerable<Customer>> GetAllCustomersAsync();
+        Task<Customer> GetCustomerByIdAsync(int id);
+        Task<IEnumerable<Order>> GetAllOrdersByCustomerIdAsync(int id);
+        Task<IEnumerable<Order>> GetAllPaymentByCustomerIdAsync(int id);
+        Task<IEnumerable<Customer>> GetAllCustomersBySearchKeyAsync(string searchKey);
         bool Add(Customer customer);
         bool Update(Customer customer);
         bool Delete(Customer customer);

@@ -15,10 +15,23 @@ namespace ServiceManagment.Controllers
             _customerRepository = customerRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchKey)
         {
-            var customers = await _customerRepository.GetAllCustomers();
-            return View(customers);
+            if(!String.IsNullOrEmpty(searchKey))
+            {
+                var customers = await _customerRepository.GetAllCustomersBySearchKeyAsync(searchKey);
+                if(customers.Count() != 0)
+                {
+                    ViewData["CurrentKey"] = searchKey;
+                    return View(customers);
+                }
+                else
+                {
+                    return View(await _customerRepository.GetAllCustomersAsync());
+                }
+            }
+
+            return View(await _customerRepository.GetAllCustomersAsync());
         }
 
         [HttpGet]
@@ -44,7 +57,7 @@ namespace ServiceManagment.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var customerDetail = await _customerRepository.GetCustomerById(id);
+            var customerDetail = await _customerRepository.GetCustomerByIdAsync(id);
 
             return View(customerDetail);
         }
@@ -52,7 +65,7 @@ namespace ServiceManagment.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var customer = await _customerRepository.GetCustomerById(id);
+            var customer = await _customerRepository.GetCustomerByIdAsync(id);
 
             return View(customer);
         }
@@ -79,7 +92,7 @@ namespace ServiceManagment.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var customerToDelete = await _customerRepository.GetCustomerById(id);
+            var customerToDelete = await _customerRepository.GetCustomerByIdAsync(id);
             if (customerToDelete != null)
             {
                 _customerRepository.Delete(customerToDelete);
@@ -90,7 +103,7 @@ namespace ServiceManagment.Controllers
 
         public async Task<IActionResult> Orders(int id)
         {
-            var userOrders = await _customerRepository.GetAllOrdersByCustomerId(id);
+            var userOrders = await _customerRepository.GetAllOrdersByCustomerIdAsync(id);
 
             return View(userOrders);
         }
@@ -98,7 +111,7 @@ namespace ServiceManagment.Controllers
         public async Task<IActionResult> Payment(int id)
         {
             double? userToPay = 0;
-            var userPayments = await _customerRepository.GetAllPaymentByCustomerId(id);
+            var userPayments = await _customerRepository.GetAllPaymentByCustomerIdAsync(id);
 
             foreach(var payment in userPayments)
             {

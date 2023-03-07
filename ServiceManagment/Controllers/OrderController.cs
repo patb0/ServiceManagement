@@ -15,11 +15,24 @@ namespace ServiceManagment.Controllers
             _orderRepository = orderRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchKey)
         {
-            var orders = await _orderRepository.GetAllOrders();
+            if(!String.IsNullOrEmpty(searchKey))
+            {
+                var orders = await _orderRepository.GetAllOrdersBySearchKey(searchKey);
 
-            return View(orders);
+                if(orders.Count() != 0)
+                {
+                    ViewData["CurrentKey"] = searchKey;
+                    return View(orders);
+                }
+                else
+                {
+                    return View(await _orderRepository.GetAllOrdersAsync());
+                }
+            }
+
+            return View(await _orderRepository.GetAllOrdersAsync());
         }
 
         [HttpGet]
@@ -61,7 +74,7 @@ namespace ServiceManagment.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var order = await _orderRepository.GetOrderById(id);
+            var order = await _orderRepository.GetOrderByIdAsync(id);
 
             return View(order);
         }
@@ -69,7 +82,7 @@ namespace ServiceManagment.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var order = await _orderRepository.GetOrderById(id);
+            var order = await _orderRepository.GetOrderByIdAsync(id);
 
             return View(order);
         }
@@ -79,7 +92,7 @@ namespace ServiceManagment.Controllers
         {
             //add validation
             string finishStatus = "Finished";
-            var order = await _orderRepository.GetOrderById(id);
+            var order = await _orderRepository.GetOrderByIdAsync(id);
             if(order != null)
             {
                 order.OrderStatus = orderViewModel.OrderStatus;
@@ -103,15 +116,14 @@ namespace ServiceManagment.Controllers
 
         public async Task<IActionResult> ListOrdersByStatus (string status)
         {
-            var orders = await _orderRepository.GetAllOrdersByStatus(status);
+            var orders = await _orderRepository.GetAllOrdersByStatusAsync(status);
 
             return View(orders);
         }
 
         public async Task<IActionResult> DetailOrderPayment (int id)
         {
-            //var order = await _orderRepository.GetOrderById(id);
-            var orderPayment = await _orderRepository.GetPaymentByOrderId(id);
+            var orderPayment = await _orderRepository.GetPaymentByOrderIdAsync(id);
 
             return View(orderPayment);
         }
@@ -119,7 +131,7 @@ namespace ServiceManagment.Controllers
         [HttpGet]
         public async Task<IActionResult> EditOrderPayment (int id)
         {
-            var order = await _orderRepository.GetOrderById(id);
+            var order = await _orderRepository.GetOrderByIdAsync(id);
             if( order != null )
                 return View(order.Payment);
             //return Error?
@@ -129,7 +141,7 @@ namespace ServiceManagment.Controllers
         [HttpPost]
         public async Task<IActionResult> EditOrderPayment (int id, EditOrderPaymentViewModel editOrderPaymentVM)
         {
-            var order = await _orderRepository.GetOrderById(id);
+            var order = await _orderRepository.GetOrderByIdAsync(id);
             if(order != null)
             {
                 if(order.Payment.ToPay < editOrderPaymentVM.ToPay)

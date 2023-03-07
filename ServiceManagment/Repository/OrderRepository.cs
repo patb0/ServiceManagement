@@ -27,7 +27,7 @@ namespace ServiceManagment.Repository
             return Save();
         }
 
-        public async Task<IEnumerable<Order>> GetAllOrders()
+        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
             return await _context.Orders
                 .Include(i => i.Customer)
@@ -37,7 +37,7 @@ namespace ServiceManagment.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Order>> GetAllOrdersByStatus(string status)
+        public async Task<IEnumerable<Order>> GetAllOrdersByStatusAsync(string status)
         {
             return await _context.Orders
                 .Include(i => i.Customer)
@@ -46,14 +46,14 @@ namespace ServiceManagment.Repository
                 .ToListAsync();
         }
 
-        public async Task<Order> GetPaymentByOrderId(int id)
+        public async Task<Order> GetPaymentByOrderIdAsync(int id)
         {
             return await _context.Orders
                 .Include(i => i.Payment)
-                .FirstOrDefaultAsync(x=> x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<Order?> GetOrderById(int id)
+        public async Task<Order?> GetOrderByIdAsync(int id)
         {
             return await _context.Orders
                 .Include(i => i.Customer)
@@ -72,6 +72,19 @@ namespace ServiceManagment.Repository
         {
             _context.Update(order);
             return Save();
+        }
+
+        public async Task<IEnumerable<Order>> GetAllOrdersBySearchKey(string searchKey)
+        {
+            return await _context.Orders
+                .Include(i => i.Customer)
+                .Include(j => j.Product)
+                .Include(k => k.Payment)
+                .Where(x => x.Customer.Name.Contains(searchKey)
+                || x.Product.ProducerName.Contains(searchKey)
+                || x.Product.Model.Contains(searchKey)
+                || x.Product.Fault.Contains(searchKey))
+                .ToListAsync();
         }
     }
 }

@@ -2,6 +2,12 @@
 @{
 }
 <h1>LIST OF ALL CUSTOMERS</h1>
+<form method="post" asp-action="Index">
+	<div class="form-group">
+		<input class="form-control" name="searchKey" value="@ViewData["CurrentKey"]" placeholder="Search key" />
+		<button type="submit" class="btn btn-danger">Search</button>
+	</div>
+</form>
 
 	<table class="table">
 		<thead>

@@ -20,6 +20,13 @@
 <a type="button" class="btn btn-danger" asp-controller="Order" 
     asp-action="ListOrdersByStatus" asp-route-status="Finished">Finished orders</a>
 
+<form method="post" asp-action="Index">
+    <div class="form-group">
+        <input class="form-control" name="searchKey" value="@ViewData["CurrentKey"]"/>
+        <button type="submit" class="btn btn-danger">Search</button>
+    </div>
+</form>
+
 <table class="table">
     <thead class="thead-dark">
         <tr>
