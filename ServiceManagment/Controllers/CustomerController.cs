@@ -43,16 +43,22 @@ namespace ServiceManagment.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(Customer customer, int operation)
         {
-            customer.UserAdded = DateTime.Now;
-            _customerRepository.Add(customer);
-
-
-            if(operation == ((uint)OrderConstans.ONLY_ADD_CUSTOMER))
+            if(!ModelState.IsValid)
             {
-                return RedirectToAction("Index");
+                return View(customer);
             }
+            else
+            {
+                customer.UserAdded = DateTime.Now;
+                _customerRepository.Add(customer);
 
-            return RedirectToAction("Create", "Order", new {@id = customer.Id});
+                if (operation == ((uint)OrderConstans.ONLY_ADD_CUSTOMER))
+                {
+                    return RedirectToAction("Index");
+                }
+
+                return RedirectToAction("Create", "Order", new { @id = customer.Id });
+            }
         }
 
         public async Task<IActionResult> Detail(int id)

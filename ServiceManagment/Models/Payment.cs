@@ -7,6 +7,8 @@ namespace ServiceManagment.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [MaxLength(1000)]
         public double? ToPay { get; set; }
         public double? Paid { get; set; } = 0;
     }
