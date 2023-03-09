@@ -43,7 +43,7 @@ namespace ServiceManagment.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(Customer customer, int operation)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(customer);
             }

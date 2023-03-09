@@ -17,10 +17,10 @@ namespace ServiceManagment.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FlatNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<int>(type: "int", nullable: false)
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,7 +48,7 @@ namespace ServiceManagment.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ToPay = table.Column<double>(type: "float", nullable: true),
+                    ToPay = table.Column<double>(type: "float", maxLength: 1000, nullable: true),
                     Paid = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
@@ -80,7 +80,7 @@ namespace ServiceManagment.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     NIP = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),

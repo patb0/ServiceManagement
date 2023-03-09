@@ -12,7 +12,7 @@ using ServiceManagment.Data;
 namespace ServiceManagment.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230306191632_InitialCreate")]
+    [Migration("20230309092053_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -35,14 +35,16 @@ namespace ServiceManagment.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("FlatNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PostalCode")
-                        .HasColumnType("int");
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
                         .IsRequired()
@@ -105,7 +107,8 @@ namespace ServiceManagment.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<DateTime>("UserAdded")
                         .HasColumnType("datetime2");
@@ -165,6 +168,7 @@ namespace ServiceManagment.Migrations
                         .HasColumnType("float");
 
                     b.Property<double?>("ToPay")
+                        .HasMaxLength(1000)
                         .HasColumnType("float");
 
                     b.HasKey("Id");
