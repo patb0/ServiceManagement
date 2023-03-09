@@ -34,6 +34,7 @@ namespace ServiceManagment.Repository
                 .Include(j => j.Product)
                 .Include(k => k.Payment)
                 .OrderBy(x => x.OrderStatus)
+                .OrderByDescending(x => x.OrderAdded)
                 .ToListAsync();
         }
 
@@ -43,6 +44,7 @@ namespace ServiceManagment.Repository
                 .Include(i => i.Customer)
                 .Include(j => j.Product)
                 .Where(x => x.OrderStatus == (OrderStatus)Enum.Parse(typeof(OrderStatus), status))
+                .OrderByDescending(x => x.OrderAdded)
                 .ToListAsync();
         }
 

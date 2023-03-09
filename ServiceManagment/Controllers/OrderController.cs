@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServiceManagment.Common;
 using ServiceManagment.Data.Enum;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
@@ -39,37 +40,45 @@ namespace ServiceManagment.Controllers
         public IActionResult Create(int id)
         {
             var orderViewModel = new CreateOrderViewModel { CustomerId = id };
-            
+
             return View(orderViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(int id, CreateOrderViewModel orderViewModel)
+        public async Task<IActionResult> Create(CreateOrderViewModel orderViewModel)
         {
-            var order = new Order()
+            //check this
+            if(!ModelState.IsValid)
             {
-                OrderStatus = Data.Enum.OrderStatus.New,
-                OrderAdded = DateTime.Now,
-                CustomerId = id,
-                ProductId = orderViewModel.ProductId,
-                Product = new Product
+                return View(orderViewModel);
+            }
+            else
+            {
+                var order = new Order()
                 {
-                    ProductType = orderViewModel.Product.ProductType,
-                    ProducerName = orderViewModel.Product.ProducerName,
-                    Model = orderViewModel.Product.Model,
-                    SerialNumber = orderViewModel.Product.SerialNumber,
-                    Fault = orderViewModel.Product.Fault,
-                    Description = orderViewModel.Product.Description,
-                },
-                Payment = new Payment
-                {
-                    ToPay = orderViewModel.Payment.ToPay,
-                    Paid = 0,
-                }
-            };
-            _orderRepository.Add(order);
+                    OrderStatus = Data.Enum.OrderStatus.New,
+                    OrderAdded = DateTime.Now,
+                    CustomerId = orderViewModel.CustomerId,
+                    Product = new Product
+                    {
+                        ProductType = orderViewModel.Product.ProductType,
+                        ProducerName = orderViewModel.Product.ProducerName,
+                        Model = orderViewModel.Product.Model,
+                        SerialNumber = orderViewModel.Product.SerialNumber,
+                        Fault = orderViewModel.Product.Fault,
+                        Description = orderViewModel.Product.Description,
+                    },
+                    Payment = new Payment
+                    {
+                        ToPay = orderViewModel.Payment.ToPay,
+                        Paid = 0,
+                    }
+                };
 
-            return RedirectToAction("Index");
+                _orderRepository.Add(order);
+
+                return RedirectToAction("Index");
+            }
         }
 
         public async Task<IActionResult> Detail(int id)
@@ -84,33 +93,43 @@ namespace ServiceManagment.Controllers
         {
             var order = await _orderRepository.GetOrderByIdAsync(id);
 
-            return View(order);
+            if(order != null)
+            {
+                var editOrderVM = new EditOrderViewModel
+                {
+                    Id = order.Id,
+                    CustomerName = order.Customer.Name,
+                    Product = order.Product,
+                };
+                return View(editOrderVM);
+            }
+            //add error if order == null
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditOrderViewModel orderViewModel)
         {
-            //add validation
-            string finishStatus = "Finished";
-            var order = await _orderRepository.GetOrderByIdAsync(id);
-            if(order != null)
+            if(!ModelState.IsValid)
             {
-                order.OrderStatus = orderViewModel.OrderStatus;
-                order.Product.ProductType = orderViewModel.Product.ProductType;
-                order.Product.Model = orderViewModel.Product.Model;
-                order.Product.SerialNumber = orderViewModel.Product.SerialNumber;
-                order.Product.Fault = orderViewModel.Product.Fault;
-                order.Product.Description = orderViewModel.Product.Description;
-                if(order.OrderStatus == (OrderStatus)Enum.Parse(typeof(OrderStatus), finishStatus))
-                {
-                    order.Payment.ToPay = 0;
-                }
-
-                _orderRepository.Update(order);
+                return View(orderViewModel);
             }
-            //return Index
+            else
+            {
+                var order = await _orderRepository.GetOrderByIdAsync(id);
 
-            //return Error
+                if (order != null)
+                {
+                    order.OrderStatus = orderViewModel.OrderStatus;
+                    order.Product = orderViewModel.Product;
+                    if (order.OrderStatus == (OrderStatus)Enum.Parse(typeof(OrderStatus), OrderConstans.FINISH_STATUS))
+                    {
+                        order.Payment.ToPay = 0;
+                    }
+
+                    _orderRepository.Update(order);
+                }
+            }
             return RedirectToAction("Index");
         }
 
@@ -131,31 +150,49 @@ namespace ServiceManagment.Controllers
         [HttpGet]
         public async Task<IActionResult> EditOrderPayment (int id)
         {
+            //add error if order == null
             var order = await _orderRepository.GetOrderByIdAsync(id);
+
             if( order != null )
-                return View(order.Payment);
-            //return Error?
+            {
+                var editOrderPaymentVM = new EditOrderPaymentViewModel
+                {
+                    Paid = order.Payment.Paid,
+                    ToPay = order.Payment.ToPay,
+                };
+                return View(editOrderPaymentVM);
+            }
+
             return RedirectToAction("DetailOrderPayment");
         }
 
         [HttpPost]
         public async Task<IActionResult> EditOrderPayment (int id, EditOrderPaymentViewModel editOrderPaymentVM)
         {
-            var order = await _orderRepository.GetOrderByIdAsync(id);
-            if(order != null)
+            if(!ModelState.IsValid)
             {
-                if(order.Payment.ToPay < editOrderPaymentVM.ToPay)
-                {
-                    order.Payment.ToPay += editOrderPaymentVM.ToPay - order.Payment.ToPay;
-                }
-                else
-                {
-                    order.Payment.Paid += order.Payment.ToPay - editOrderPaymentVM.ToPay;
-                    order.Payment.ToPay = editOrderPaymentVM.ToPay;
-                }
-                _orderRepository.Update(order);
-                return RedirectToAction("Index");
+                return View(editOrderPaymentVM);
             }
+            else
+            {
+                var order = await _orderRepository.GetOrderByIdAsync(id);
+                if (order != null)
+                {
+                    if (order.Payment.ToPay < editOrderPaymentVM.ToPay)
+                    {
+                        order.Payment.ToPay += editOrderPaymentVM.ToPay - order.Payment.ToPay;
+                    }
+                    else
+                    {
+                        order.Payment.Paid += order.Payment.ToPay - editOrderPaymentVM.ToPay;
+                        order.Payment.ToPay = editOrderPaymentVM.ToPay;
+                    }
+                    _orderRepository.Update(order);
+
+                    return RedirectToAction("Index");
+                }
+            }
+
             return RedirectToAction("Index");
         }
     }

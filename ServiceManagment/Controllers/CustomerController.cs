@@ -52,7 +52,7 @@ namespace ServiceManagment.Controllers
                 customer.UserAdded = DateTime.Now;
                 _customerRepository.Add(customer);
 
-                if (operation == ((uint)OrderConstans.ONLY_ADD_CUSTOMER))
+                if (operation == ((uint)CustomerConstans.ONLY_ADD_CUSTOMER))
                 {
                     return RedirectToAction("Index");
                 }

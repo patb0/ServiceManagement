@@ -8,14 +8,7 @@ namespace ServiceManagment.ViewModel
     {
         public int Id { get; set; }
         public OrderStatus OrderStatus { get; set; }
-        public DateTime OrderAdded { get; set; }
-
-        [ForeignKey("Customer")]
-        public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
-
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
+        public string CustomerName { get; set; }
         public Product Product { get; set; }
     }
 }

@@ -3,7 +3,11 @@
     public enum ProductType
     {
         Laptop,
+        Computer,
+        Tablet,
         Monitor,
-        PC
+        Mouse,
+        Keyboard,
+        Headphone,
     }
 }

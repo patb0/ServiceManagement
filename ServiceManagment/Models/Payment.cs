@@ -8,7 +8,7 @@ namespace ServiceManagment.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(1000)]
+        [RegularExpression(@"(\d).?(\d{0,2})", ErrorMessage = "Wrong amount to pay!")]
         public double? ToPay { get; set; }
         public double? Paid { get; set; } = 0;
     }

@@ -1,4 +1,4 @@
-﻿@model ServiceManagment.Models.Payment
+﻿@model ServiceManagment.ViewModel.EditOrderPaymentViewModel
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -7,16 +7,13 @@
 }
 <form method="post" asp-action="EditOrderPayment">
     <div class="form-group">
-        <label class="form-label">ID</label>
-        <input type="text" class="form-control" asp-for="@Model.Id" readonly/>
-    </div>
-    <div class="form-group">
         <label class="form-label">Paid</label>
         <input type="text" class="form-control" asp-for="@Model.Paid" readonly/>
     </div>
     <div class="form-group">
         <label class="form-label">To pay</label>
         <input type="text" class="form-control" asp-for="@Model.ToPay"/>
+        <span asp-validation-for="ToPay" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-danger">Save</button>

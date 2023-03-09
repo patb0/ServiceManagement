@@ -2,7 +2,7 @@
 {
     public enum CustomerType
     {
-        Company,
-        Individual
+        Individual,
+        Company
     }
 }
