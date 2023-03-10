@@ -41,15 +41,28 @@ namespace ServiceManagment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Customer customer, int operation)
+        public async Task<IActionResult> Add(AddCustomerViewModel addCustomerVM, int operation)
         {
             if (!ModelState.IsValid)
             {
-                return View(customer);
+                return View(addCustomerVM);
             }
             else
             {
-                customer.UserAdded = DateTime.Now;
+                var customer = new Customer
+                {
+                    Id = addCustomerVM.Id,
+                    Name = addCustomerVM.Name,
+                    NIP = addCustomerVM.NIP,
+                    UserAdded = DateTime.Now,
+                    Description = addCustomerVM.Description,
+                    CustomerGroup = addCustomerVM.CustomerGroup,
+                    CustomerType = addCustomerVM.CustomerType,
+                    Address = addCustomerVM.Address,
+                    Contact = addCustomerVM.Contact,
+                    Orders = addCustomerVM.Orders,
+                };
+
                 _customerRepository.Add(customer);
 
                 if (operation == ((uint)CustomerConstans.ONLY_ADD_CUSTOMER))
@@ -59,51 +72,80 @@ namespace ServiceManagment.Controllers
 
                 return RedirectToAction("Create", "Order", new { @id = customer.Id });
             }
+
+            return View("Error");
         }
 
         public async Task<IActionResult> Detail(int id)
         {
             var customerDetail = await _customerRepository.GetCustomerByIdAsync(id);
 
-            return View(customerDetail);
+            return customerDetail == null ? View("Error") : View(customerDetail);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var customer = await _customerRepository.GetCustomerByIdAsync(id);
+            if(customer != null)
+            {
+                var editCustomerVM = new EditCustomerViewModel
+                {
+                    Id = customer.Id,
+                    Name = customer.Name,
+                    NIP = customer.NIP,
+                    Description = customer.Description,
+                    CustomerGroup = customer.CustomerGroup,
+                    CustomerType = customer.CustomerType,
+                    Address = customer.Address,
+                    Contact = customer.Contact,
+                };
 
-            return View(customer);
+                return View(editCustomerVM);
+            }
+
+            return View("Error");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, EditCustomerViewModel viewCustomer)
+        public async Task<IActionResult> Edit(EditCustomerViewModel editCustomerVM)
         {
-            var customer = new Customer
+            if(!ModelState.IsValid)
             {
-                Id = id,
-                Name = viewCustomer.Name,
-                NIP = viewCustomer.NIP,
-                Description = viewCustomer.Description,
-                CustomerGroup = viewCustomer.CustomerGroup,
-                CustomerType = viewCustomer.CustomerType,
-                Address = viewCustomer.Address,
-                Contact = viewCustomer.Contact,
-            };
+                return View(editCustomerVM);
+            }
+            else
+            {
+                var customer = new Customer
+                {
+                    Id = editCustomerVM.Id,
+                    Name = editCustomerVM.Name,
+                    NIP = editCustomerVM.NIP,
+                    Description = editCustomerVM.Description,
+                    CustomerGroup = editCustomerVM.CustomerGroup,
+                    CustomerType = editCustomerVM.CustomerType,
+                    Address = editCustomerVM.Address,
+                    Contact = editCustomerVM.Contact,
+                };
 
-            _customerRepository.Update(customer);
+                _customerRepository.Update(customer);
 
-            return View();
+                return RedirectToAction("Index");
+            }
+
+            return View("Error");
         }
 
         public async Task<IActionResult> Delete(int id)
         {
             var customerToDelete = await _customerRepository.GetCustomerByIdAsync(id);
+
             if (customerToDelete != null)
             {
                 _customerRepository.Delete(customerToDelete);
                 return RedirectToAction("Index");
             }
+
             return View("Index");
         }
 

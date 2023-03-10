@@ -47,7 +47,6 @@ namespace ServiceManagment.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateOrderViewModel orderViewModel)
         {
-            //check this
             if(!ModelState.IsValid)
             {
                 return View(orderViewModel);
@@ -79,13 +78,14 @@ namespace ServiceManagment.Controllers
 
                 return RedirectToAction("Index");
             }
+            return View("Error");
         }
 
         public async Task<IActionResult> Detail(int id)
         {
-            var order = await _orderRepository.GetOrderByIdAsync(id);
+            var orderDetail = await _orderRepository.GetOrderByIdAsync(id);
 
-            return View(order);
+            return orderDetail == null ? View("Error") : View(orderDetail);
         }
 
         [HttpGet]
@@ -103,8 +103,8 @@ namespace ServiceManagment.Controllers
                 };
                 return View(editOrderVM);
             }
-            //add error if order == null
-            return View();
+
+            return View("Error");
         }
 
         [HttpPost]
@@ -128,9 +128,12 @@ namespace ServiceManagment.Controllers
                     }
 
                     _orderRepository.Update(order);
+
+                    return RedirectToAction("Index");
                 }
             }
-            return RedirectToAction("Index");
+
+            return View("Error");
         }
 
         public async Task<IActionResult> ListOrdersByStatus (string status)
@@ -144,13 +147,12 @@ namespace ServiceManagment.Controllers
         {
             var orderPayment = await _orderRepository.GetPaymentByOrderIdAsync(id);
 
-            return View(orderPayment);
+            return orderPayment == null ? View("Error") : View(orderPayment);
         }
 
         [HttpGet]
         public async Task<IActionResult> EditOrderPayment (int id)
         {
-            //add error if order == null
             var order = await _orderRepository.GetOrderByIdAsync(id);
 
             if( order != null )
@@ -163,7 +165,7 @@ namespace ServiceManagment.Controllers
                 return View(editOrderPaymentVM);
             }
 
-            return RedirectToAction("DetailOrderPayment");
+            return View("Error");
         }
 
         [HttpPost]
@@ -193,7 +195,7 @@ namespace ServiceManagment.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return View("Error");
         }
     }
 }
