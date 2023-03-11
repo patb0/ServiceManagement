@@ -4,63 +4,146 @@
 @{
 }
 
-<form method="post" asp-action="Add">
+<div class="text-center fs-1 mt-5">
+        <p class="display-3">Add new customer</p>
+</div>
+<div class="container" style="margin: 15%; margin-top: 2%">
+    <form method="post" asp-action="Add">
+        <div class="row mt-5" >
+            <div class="form-group col-md-3" style="margin-right: 10%">
+                <label class="form-label">Customer Type</label>
+                <select asp-for="CustomerType" asp-items="Html.GetEnumSelectList<CustomerType>()" 
+                    class="form-control"></select>
+            </div>
+            <div class="form-group col-md-2">
+                <label class="form-label">Phone number</label>
+                <input type="tel" class="form-control" asp-for="Contact.PhoneNumber" placeholder="Phone number">
+                <span asp-validation-for="Contact.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-2">
+                <label class="form-label">Second phone number</label>
+                <input type="tel" class="form-control" asp-for="Contact.SecondPhoneNumber" placeholder="Second phone number">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3" style="margin-right: 10%; margin-top: 2%">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" asp-for="Name" placeholder="Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4" style="margin-top: 2%">
+                <label class="form-label">Email address</label>
+                <input type="email" class="form-control" asp-for="Contact.EmailAddress" placeholder="Email address">
+                <span asp-validation-for="Contact.EmailAddress" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3" style="margin-right: 10%; margin-top: 2%">
+                <label class="form-label">Description</label>
+                <textarea type="text" class="form-control" asp-for="Description" style="resize: none" rows="5" placeholder="Description">
+
+                </textarea>
+            </div>
+            <div class="form-group col-md-4" style="margin-top: 2%">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" asp-for="Address.City" placeholder="City">
+                        <span asp-validation-for="Address.City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="form-label">Postal code</label>
+                        <input type="text" class="form-control" asp-for="Address.PostalCode" placeholder="Postal code">
+                        <span asp-validation-for="Address.PostalCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6" style="margin-top: 6%">
+                        <label class="form-label">Street</label>
+                        <input type="text" class="form-control" asp-for="Address.Street" placeholder="Street">
+                        <span asp-validation-for="Address.Street" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6" style="margin-top: 6%">
+                        <label class="form-label">Flat number</label>
+                        <input type="text" class="form-control" asp-for="Address.FlatNumber" placeholder="Flat number">
+                        <span asp-validation-for="Address.FlatNumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-xxl-5">
+            <div class="form-group col-md-4 col-md-4 mt-lg-5">
+                <button type="submit" class="btn btn-outline-primary btn-lg" name="operation" value="0">Only add customer</button>
+            </div>
+            <div class="form-group col-md-4 mt-lg-5">
+                <button type="submit" class="btn btn-outline-danger btn-lg" name="operation" value="1">Add customer and order</button>
+            </div>
+        </div>
+    </form>
+</div>
+  @*
   <div class="form-group">
-    <label class="form-label">Customer Type</label>
-    <select asp-for="CustomerType" asp-items="Html.GetEnumSelectList<CustomerType>()" 
-        class="form-control"></select>
+    
   </div>
-  <div class="form-group">
-    <label class="form-label">Name</label>
-    <input type="text" class="form-control" asp-for="Name" placeholder="Name">
-    <span asp-validation-for="Name" class="text-danger"></span>
-  </div>
+
   <div class="form-group">
     <label class="form-label">NIP</label>
     <input type="text" class="form-control" asp-for="NIP" placeholder="NIP, if company">
     <span asp-validation-for="NIP" class="text-danger"></span>
   </div>
+
   <div class="form-group">
     <label class="form-label">Description</label>
     <input type="text" class="form-control" asp-for="Description" placeholder="Description">
   </div>
+
   <br />
+
   <div class="form-group">
     <label class="form-label">City</label>
     <input type="text" class="form-control" asp-for="Address.City" placeholder="City">
     <span asp-validation-for="Address.City" class="text-danger"></span>
   </div>
+
   <div class="form-group">
     <label class="form-label">Street</label>
     <input type="text" class="form-control" asp-for="Address.Street" placeholder="Street">
     <span asp-validation-for="Address.Street" class="text-danger"></span>
   </div>
+
   <div class="form-group">
     <label class="form-label">Flat number</label>
     <input type="text" class="form-control" asp-for="Address.FlatNumber" placeholder="Flat number">
     <span asp-validation-for="Address.FlatNumber" class="text-danger"></span>
   </div>
+
   <div class="form-group">
     <label class="form-label">Postal code</label>
     <input type="text" class="form-control" asp-for="Address.PostalCode" placeholder="Postal code">
     <span asp-validation-for="Address.PostalCode" class="text-danger"></span>
   </div>
+
   <br />
+
   <div class="form-group">
     <label class="form-label">Phone number</label>
     <input type="tel" class="form-control" asp-for="Contact.PhoneNumber" placeholder="Phone number">
     <span asp-validation-for="Contact.PhoneNumber" class="text-danger"></span>
   </div>
+
   <div class="form-group">
     <label class="form-label">Second phone number</label>
     <input type="tel" class="form-control" asp-for="Contact.SecondPhoneNumber" placeholder="Second phone number">
   </div>
+
   <div class="form-group">
     <label class="form-label">Email address</label>
     <input type="email" class="form-control" asp-for="Contact.EmailAddress" placeholder="Email address">
     <span asp-validation-for="Contact.EmailAddress" class="text-danger"></span>
   </div>
+
   <br />
   <button type="submit" class="btn btn-primary" name="operation" value="0">Only add customer</button>
   <button type="submit" class="btn btn-danger" name="operation" value="1">Add customer and order</button>
 </form>
+*@

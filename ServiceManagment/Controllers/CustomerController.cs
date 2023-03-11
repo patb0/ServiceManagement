@@ -87,6 +87,7 @@ namespace ServiceManagment.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var customer = await _customerRepository.GetCustomerByIdAsync(id);
+
             if(customer != null)
             {
                 var editCustomerVM = new EditCustomerViewModel
