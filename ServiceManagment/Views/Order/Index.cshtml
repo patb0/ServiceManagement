@@ -5,57 +5,73 @@
 *@
 @{
 }
-<h1>ORDERS LIST</h1>
+<html>
+    <head>
+        @*add meta*@
+    </head>
+    <body class="bg-dark text-white">
+        <div class="text-center fs-1">
+            <p class="display-3">Orders</p>
+        </div>
+        <div class="mt-5">
+                <form method="post" asp-action="Index">
+                <div class="row mt-1">
+                    <div class="col-md-5">
+                        <input class="form-control" name="searchKey" value="@ViewData["CurrentKey"]" placeholder="Search key..."/>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-outline-danger">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row mb-5 text-left">
+            <div class="form-group col-md-10 fs-1">
+                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Order" 
+                asp-action="Index">All orders</a>
 
-<h1>LIST OF ALL ORDERS</h1>
-<a type="button" class="btn btn-danger" asp-controller="Order" 
-    asp-action="Index">All orders</a>
+                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Order" 
+                asp-action="ListOrdersByStatus" asp-route-status="New">New orders</a>
 
-<a type="button" class="btn btn-danger" asp-controller="Order" 
-    asp-action="ListOrdersByStatus" asp-route-status="New">New orders</a>
+                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Order" 
+                asp-action="ListOrdersByStatus" asp-route-status="InProgress">In progress orders</a>
 
-<a type="button" class="btn btn-danger" asp-controller="Order" 
-    asp-action="ListOrdersByStatus" asp-route-status="InProgress">In progress orders</a>
+                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Order" 
+                asp-action="ListOrdersByStatus" asp-route-status="Finished">Finished orders</a>
+            </div>
+        </div>
+        <table class="table text-white">
+            <thead class="bg-white text-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Order status</th>
+                    <th scope="col">Owner</th>
+                    <th scope="col">Product type</th>
+                    <th scope="col">Product name</th>
+                    <th scope="col">Product fault</th>
+                    <th scope="col">To pay</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var order in Model)
+                {   
+                    <tr>
+                        <th scope="row">@order.Id</th>
+                        <td class="text-danger">@order.OrderStatus</td>
+                        <td>@order.Customer.Name</td>
+                        <td>@order.Product.ProductType</td>
+                        <td>@order.Product.ProducerName @order.Product.Model</td>
+                        <td>@order.Product.Fault</td>
+                        <td>@order.Payment.ToPay ,-</td>
+                        <td>
+                            <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Order"
+                                asp-action="Detail" asp-route-id="@order.Id">Detail</a>
+                        </td>
+                    </tr>   
+                }
+            </tbody>
+        </table>
+    </body>
+</html>
 
-<a type="button" class="btn btn-danger" asp-controller="Order" 
-    asp-action="ListOrdersByStatus" asp-route-status="Finished">Finished orders</a>
-
-<form method="post" asp-action="Index">
-    <div class="form-group">
-        <input class="form-control" name="searchKey" value="@ViewData["CurrentKey"]"/>
-        <button type="submit" class="btn btn-danger">Search</button>
-    </div>
-</form>
-
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Order status</th>
-            <th scope="col">Owner</th>
-            <th scope="col">Product type</th>
-            <th scope="col">Product name</th>
-            <th scope="col">Product fault</th>
-            <th scope="col">To pay</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var order in Model)
-        {   
-            <tr>
-                <th scope="row">@order.Id</th>
-                <td>@order.OrderStatus</td>
-                <td>@order.Customer.Name</td>
-                <td>@order.Product.ProductType</td>
-                <td>@order.Product.ProducerName @order.Product.Model</td>
-                <td>@order.Product.Fault</td>
-                <td>@order.Payment.ToPay ,-</td>
-                <td>
-                    <a type="button" class="btn btn-primary" asp-controller="Order"
-                        asp-action="Detail" asp-route-id="@order.Id">Detail</a>
-                </td>
-            </tr>   
-        }
-    </tbody>
-</table>

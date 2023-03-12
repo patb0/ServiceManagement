@@ -33,18 +33,9 @@ namespace ServiceManagment.Repository
                 .Include(i => i.Customer)
                 .Include(j => j.Product)
                 .Include(k => k.Payment)
-                .OrderBy(x => x.OrderStatus)
-                .OrderByDescending(x => x.OrderAdded)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<Order>> GetAllOrdersByStatusAsync(string status)
-        {
-            return await _context.Orders
-                .Include(i => i.Customer)
-                .Include(j => j.Product)
-                .Where(x => x.OrderStatus == (OrderStatus)Enum.Parse(typeof(OrderStatus), status))
-                .OrderByDescending(x => x.OrderAdded)
+                .OrderBy(y => y.OrderStatus)
+                .ThenByDescending(x => x.OrderAdded.Date)
+                .ThenByDescending(x => x.OrderAdded.TimeOfDay)
                 .ToListAsync();
         }
 
@@ -86,6 +77,19 @@ namespace ServiceManagment.Repository
                 || x.Product.ProducerName.Contains(searchKey)
                 || x.Product.Model.Contains(searchKey)
                 || x.Product.Fault.Contains(searchKey))
+                .OrderByDescending(x => x.OrderAdded.Date)
+                .ThenByDescending(x => x.OrderAdded.TimeOfDay)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Order>> GetAllOrdersByStatus(string status)
+        {
+            return await _context.Orders
+                .Include(i => i.Customer)
+                .Include(j => j.Product)
+                .Include(k => k.Payment)
+                .Where(x => x.OrderStatus == (OrderStatus)Enum.Parse(typeof(OrderStatus), status))
+                .OrderByDescending(x => x.OrderAdded.Date)
                 .ToListAsync();
         }
     }

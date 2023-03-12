@@ -136,11 +136,14 @@ namespace ServiceManagment.Controllers
             return View("Error");
         }
 
-        public async Task<IActionResult> ListOrdersByStatus (string status)
+        public async Task<IActionResult> ListOrdersByStatus (string status, string searchKey)
         {
-            var orders = await _orderRepository.GetAllOrdersByStatusAsync(status);
-
-            return View(orders);
+            var orders = await _orderRepository.GetAllOrdersByStatus(status);
+            if(orders != null)
+            {
+                return View(orders);
+            }
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> DetailOrderPayment (int id)

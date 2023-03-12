@@ -1,61 +1,76 @@
 ﻿@model IEnumerable<ServiceManagment.Models.Customer>
 @{
 }
-<h1>LIST OF ALL CUSTOMERS</h1>
-<form method="post" asp-action="Index">
-	<div class="form-group">
-		<input class="form-control" name="searchKey" value="@ViewData["CurrentKey"]" placeholder="Search key" />
-		<button type="submit" class="btn btn-danger">Search</button>
-	</div>
-</form>
 
-	<table class="table">
-		<thead>
-			<tr>
-				<th>User ID</th>
-				<th>Add</th>
-				<th>Customer type</th>
-				<th>Name</th>
-				<th>Customer group</th>
-				<th>City</th>
-				<th>Phone number</th>
-				<th>Email address</th>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach(var customer in Model)
-			{		
+<html>
+    <head>
+		@*add meta*@
+    </head>
+    <body class="bg-dark text-white">
+        <div class="text-center fs-1 mb-5">
+            <p class="display-3">Customers</p>
+        </div>
+        <div class="mb-5">
+                <form method="post" asp-action="Index">
+                <div class="row mt-1">
+                    <div class="col-md-5">
+                        <input class="form-control" name="searchKey" value="@ViewData["CurrentKey"]" placeholder="Search key..."/>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-outline-danger">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+		<table class="table text-white">
+			<thead class="bg-white text-dark">
 				<tr>
-					<th scope="row">@customer.Id</th>
-					<td>@customer.UserAdded</td>
-					<td>@customer.CustomerType</td>
-					<td>@customer.Name</td>
-					<td>@customer.CustomerGroup</td>
-					<td>@customer.Address.City</td>
-					<td>@customer.Contact.PhoneNumber</td>
-					<td>@customer.Contact.EmailAddress</td>
-					<td>
-						<a type="button" class="btn btn-primary" asp-controller="Customer"
-							asp-action="Detail" asp-route-id="@customer.Id">Detail</a>
-					</td>
-					<td>
-						<a type="button" class="btn btn-primary" asp-controller="Customer"
-							asp-action="Edit" asp-route-id="@customer.Id">Edit</a>
-					</td>
-					<td>
-						<a type="button" class="btn btn-danger" asp-controller="Customer"
-							asp-action="Delete" asp-route-id="@customer.Id">Delete</a>
-					</td>
-					<td>
-						<a type="button" class="btn btn-danger" asp-controller="Order"
-							asp-action="Create" asp-route-id="@customer.Id">Create order</a>
-					</td>
+					<th>ID</th>
+					<th>Add</th>
+					<th>Type</th>
+					<th>Name</th>
+					<th>Group</th>
+					<th>City</th>
+					<th>Phone number</th>
+					<th>Email address</th>
+					<th></th>
+					<th></th>
+					<th></th>
+					@*<th></th>
+					<th></th>*@
 				</tr>
-			}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				@foreach(var customer in Model)
+				{		
+					<tr>
+						<th scope="row">@customer.Id</th>
+						<td>@customer.UserAdded</td>
+						<td>@customer.CustomerType</td>
+						<td>@customer.Name</td>
+						<td>@customer.CustomerGroup</td>
+						<td>@customer.Address.City</td>
+						<td>@customer.Contact.PhoneNumber</td>
+						<td>@customer.Contact.EmailAddress</td>
+						<td>
+							<a type="button" class="btn btn-outline-success" asp-controller="Customer"
+								asp-action="Detail" asp-route-id="@customer.Id">Detail</a>
+						</td>
+						@*<td>
+							<a type="button" class="btn btn-primary" asp-controller="Customer"
+								asp-action="Edit" asp-route-id="@customer.Id">Edit</a>
+						</td>
+						<td>
+							<a type="button" class="btn btn-danger" asp-controller="Customer"
+								asp-action="Delete" asp-route-id="@customer.Id">Delete</a>
+						</td>*@
+						<td>
+							<a type="button" class="btn btn-outline-danger" asp-controller="Order"
+								asp-action="Create" asp-route-id="@customer.Id">Create order</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</body>
+</html>
