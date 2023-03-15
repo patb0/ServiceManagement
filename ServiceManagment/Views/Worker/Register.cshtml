@@ -1,0 +1,27 @@
+﻿@model ServiceManagment.ViewModel.RegisterWorkerViewModel
+
+@{
+}
+
+<h1>REGISTER VIEW</h1>
+
+<form method="post" asp-action="Register" asp-controller="Worker">
+    <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="text" asp-for="EmailAddress" />
+        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" asp-for="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Confirm password</label>
+        <input type="password" asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Sign up" />
+    </div>
+</form>
