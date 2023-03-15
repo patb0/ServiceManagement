@@ -1,0 +1,26 @@
+﻿@model ServiceManagment.ViewModel.LoginWorkerViewModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+}
+
+<h1>LOGIN VIEW</h1>
+
+<form method="post" asp-action="Login">
+    <div>
+        <label class="form-label">Email address</label>
+        <input type="text" asp-for="EmailAddress" />
+        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+    </div>
+    <div>
+        <label class="form-label">Password</label>
+        <input type="password" asp-for="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div>
+        <input type="submit" class="btn btn-primary" value="Sign on" />
+    </div>
+</form>

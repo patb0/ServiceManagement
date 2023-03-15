@@ -46,7 +46,7 @@ namespace ServiceManagment.Controllers
             var worker = new Worker()
             {
                 UserName = registerWorkerVM.EmailAddress,
-                EmailAddress = registerWorkerVM.EmailAddress,
+                Email = registerWorkerVM.EmailAddress,
             };
 
             var newWorker = await _workerManager.CreateAsync(worker, registerWorkerVM.Password);
@@ -57,6 +57,44 @@ namespace ServiceManagment.Controllers
             }
 
             return RedirectToAction("Index", "Customer");
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View(new LoginWorkerViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginWorkerViewModel loginWorkerVM)
+        {
+            if(!ModelState.IsValid) 
+            {
+                return View(loginWorkerVM);
+            }
+
+            var worker = await _workerManager.FindByEmailAsync(loginWorkerVM.EmailAddress);
+
+            if(worker != null)
+            {
+                var workerPasswordCheck = await _workerManager.CheckPasswordAsync(worker, loginWorkerVM.Password);
+
+                if (workerPasswordCheck)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(worker, loginWorkerVM.Password, false, false);
+
+                    if(result.Succeeded) 
+                    {
+                        return RedirectToAction("Index", "Customer");
+                    }
+                }
+
+                TempData["Error"] = "Password is incorrect!";
+                return View(loginWorkerVM);
+            }
+
+            TempData["Error"] = "Worker with this email address doesn't exist";
+            return View(loginWorkerVM);
         }
     }
 }

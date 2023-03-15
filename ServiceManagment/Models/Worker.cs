@@ -5,7 +5,6 @@ namespace ServiceManagment.Models
 {
     public class Worker : IdentityUser
     {
-        public string? EmailAddress { get; set; }
         public ICollection<Customer>? Customers { get; set; }
     }
 }
