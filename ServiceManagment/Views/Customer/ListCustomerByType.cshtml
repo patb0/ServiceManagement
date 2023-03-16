@@ -8,30 +8,18 @@
 		@*add meta*@
     </head>
     <body class="bg-dark text-white">
-        <div class="text-center fs-1">
+        <div class="text-center fs-1 mb-5">
             <p class="display-3">Customers</p>
-        </div>
-        <div class="mt-5">
-                <form method="post" asp-action="Index">
-                <div class="row mt-1">
-                    <div class="col-md-5">
-                        <input class="form-control" name="searchKey" value="@ViewData["CurrentKey"]" placeholder="Search key..."/>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-outline-danger">Search</button>
-                    </div>
-                </div>
-            </form>
         </div>
 		<div class="row mb-5 text-left">
             <div class="form-group col-md-10 fs-1">
-                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Customer" 
+                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Customer"
                 asp-action="Index">All orders</a>
 
-                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Customer" 
+                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Customer"
                 asp-action="ListCustomerByType" asp-route-customerType="Individual">Individual</a>
 
-                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Customer" 
+                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Customer"
                 asp-action="ListCustomerByType" asp-route-customerType="Company">Company</a>
             </div>
         </div>
@@ -49,8 +37,8 @@
 					<th></th>
 					<th></th>
 					<th></th>
-					@*<th></th>
-					<th></th>*@
+					<th></th>
+					@*<th></th>*@
 				</tr>
 			</thead>
 			<tbody>
@@ -72,11 +60,11 @@
 						@*<td>
 							<a type="button" class="btn btn-primary" asp-controller="Customer"
 								asp-action="Edit" asp-route-id="@customer.Id">Edit</a>
-						</td>
+						</td>*@
 						<td>
 							<a type="button" class="btn btn-danger" asp-controller="Customer"
 								asp-action="Delete" asp-route-id="@customer.Id">Delete</a>
-						</td>*@
+						</td>
 						<td>
 							<a type="button" class="btn btn-outline-danger" asp-controller="Order"
 								asp-action="Create" asp-route-id="@customer.Id">Create order</a>

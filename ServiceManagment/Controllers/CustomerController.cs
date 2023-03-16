@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceManagment.Common;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
@@ -6,6 +7,7 @@ using ServiceManagment.ViewModel;
 
 namespace ServiceManagment.Controllers
 {
+    [Authorize]
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepository;
@@ -168,6 +170,13 @@ namespace ServiceManagment.Controllers
             }
 
             return View(userToPay);
+        }
+
+        public async Task<IActionResult> ListCustomerByType(string customerType)
+        {
+            var customers = await _customerRepository.GetAllCustomersByTypeAsync(customerType);
+
+            return View(customers);
         }
     }
 }

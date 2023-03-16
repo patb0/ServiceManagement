@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceManagment.Data;
+using ServiceManagment.Data.Enum;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
 
@@ -43,6 +44,15 @@ namespace ServiceManagment.Repository
                 || x.Address.City.Contains(searchKey)
                 || x.Contact.PhoneNumber.Contains(searchKey)
                 || x.Contact.EmailAddress.Contains(searchKey))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Customer>> GetAllCustomersByTypeAsync(string customerType)
+        {
+            return await _context.Customers
+                .Include(i => i.Address)
+                .Include (j => j.Contact)
+                .Where(x => x.CustomerType == (CustomerType)Enum.Parse(typeof(CustomerType), customerType))
                 .ToListAsync();
         }
 

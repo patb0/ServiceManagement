@@ -9,6 +9,7 @@ namespace ServiceManagment.Interfaces
         Task<IEnumerable<Order>> GetAllOrdersByCustomerIdAsync(int id);
         Task<IEnumerable<Order>> GetAllPaymentByCustomerIdAsync(int id);
         Task<IEnumerable<Customer>> GetAllCustomersBySearchKeyAsync(string searchKey);
+        Task<IEnumerable<Customer>> GetAllCustomersByTypeAsync(string customerType);
         bool Add(Customer customer);
         bool Update(Customer customer);
         bool Delete(Customer customer);

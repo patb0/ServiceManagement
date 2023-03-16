@@ -7,16 +7,16 @@ using ServiceManagment.ViewModel;
 
 namespace ServiceManagment.Controllers
 {
-    public class WorkerController : Controller
+    public class AccountController : Controller
     {
-        private readonly UserManager<Worker> _workerManager;
+        private readonly UserManager<Worker> _userManager;
         private readonly SignInManager<Worker> _signInManager;
         private readonly ApplicationDbContext _dbContext;
 
-        public WorkerController(UserManager<Worker> workerManager, SignInManager<Worker> signInManager,
+        public AccountController(UserManager<Worker> userManager, SignInManager<Worker> signInManager,
             ApplicationDbContext dbContext)
         {
-            _workerManager = workerManager;
+            _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
         }
@@ -35,7 +35,7 @@ namespace ServiceManagment.Controllers
                 return View(registerWorkerVM);
             }
 
-            var workerExist = await _workerManager.FindByEmailAsync(registerWorkerVM.EmailAddress);
+            var workerExist = await _userManager.FindByEmailAsync(registerWorkerVM.EmailAddress);
 
             if (workerExist != null)
             {
@@ -49,11 +49,11 @@ namespace ServiceManagment.Controllers
                 Email = registerWorkerVM.EmailAddress,
             };
 
-            var newWorker = await _workerManager.CreateAsync(worker, registerWorkerVM.Password);
-            
+            var newWorker = await _userManager.CreateAsync(worker, registerWorkerVM.Password);
+          
             if(newWorker.Succeeded)
             {
-                await _workerManager.AddToRoleAsync(worker, WorkerRoles.Worker);
+                await _userManager.AddToRoleAsync(worker, WorkerRoles.Worker);
             }
 
             return RedirectToAction("Index", "Customer");
@@ -66,18 +66,18 @@ namespace ServiceManagment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginWorkerViewModel loginWorkerVM)
+        public async Task<IActionResult> Login(LoginWorkerViewModel loginWorkerVM, string? returnUrl)
         {
             if(!ModelState.IsValid) 
             {
                 return View(loginWorkerVM);
             }
 
-            var worker = await _workerManager.FindByEmailAsync(loginWorkerVM.EmailAddress);
+            var worker = await _userManager.FindByEmailAsync(loginWorkerVM.EmailAddress);
 
             if(worker != null)
             {
-                var workerPasswordCheck = await _workerManager.CheckPasswordAsync(worker, loginWorkerVM.Password);
+                var workerPasswordCheck = await _userManager.CheckPasswordAsync(worker, loginWorkerVM.Password);
 
                 if (workerPasswordCheck)
                 {
@@ -85,6 +85,11 @@ namespace ServiceManagment.Controllers
 
                     if(result.Succeeded) 
                     {
+                        if(!String.IsNullOrEmpty(returnUrl))
+                        {
+                            return LocalRedirect(returnUrl);
+                        }
+
                         return RedirectToAction("Index", "Customer");
                     }
                 }
@@ -95,6 +100,13 @@ namespace ServiceManagment.Controllers
 
             TempData["Error"] = "Worker with this email address doesn't exist";
             return View(loginWorkerVM);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction("Login");
         }
     }
 }
