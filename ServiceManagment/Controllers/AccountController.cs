@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceManagment.Data;
@@ -21,6 +22,7 @@ namespace ServiceManagment.Controllers
             _dbContext = dbContext;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -42,6 +44,7 @@ namespace ServiceManagment.Controllers
                 TempData["Error"] = "Worker about this email is now exist!";
                 return View(registerWorkerVM);
             }
+
 
             var worker = new Worker()
             {
@@ -102,6 +105,7 @@ namespace ServiceManagment.Controllers
             return View(loginWorkerVM);
         }
 
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

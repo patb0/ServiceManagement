@@ -16,6 +16,6 @@ namespace ServiceManagment.Models
         public CustomerType CustomerType { get; set; }
         public Address Address { get; set; }
         public Contact Contact { get; set; }
-        public ICollection<Order>? Orders { get; set; } 
+        public ICollection<Order>? Orders { get; set; }
     }
 }

@@ -8,10 +8,10 @@
 		@*add meta*@
     </head>
     <body class="bg-dark text-white">
-        <div class="text-center fs-1 mb-5">
+        <div class="text-center fs-1 ">
             <p class="display-3">Customers</p>
         </div>
-		<div class="row mb-5 text-left">
+		<div class="row mb-5">
             <div class="form-group col-md-10 fs-1">
                 <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Customer"
                 asp-action="Index">All orders</a>
@@ -36,9 +36,6 @@
 					<th>Email address</th>
 					<th></th>
 					<th></th>
-					<th></th>
-					<th></th>
-					@*<th></th>*@
 				</tr>
 			</thead>
 			<tbody>
@@ -54,19 +51,11 @@
 						<td>@customer.Contact.PhoneNumber</td>
 						<td>@customer.Contact.EmailAddress</td>
 						<td>
-							<a type="button" class="btn btn-outline-success" asp-controller="Customer"
+							<a type="button" class="btn btn-outline-success btn-sm" asp-controller="Customer"
 								asp-action="Detail" asp-route-id="@customer.Id">Detail</a>
 						</td>
-						@*<td>
-							<a type="button" class="btn btn-primary" asp-controller="Customer"
-								asp-action="Edit" asp-route-id="@customer.Id">Edit</a>
-						</td>*@
 						<td>
-							<a type="button" class="btn btn-danger" asp-controller="Customer"
-								asp-action="Delete" asp-route-id="@customer.Id">Delete</a>
-						</td>
-						<td>
-							<a type="button" class="btn btn-outline-danger" asp-controller="Order"
+							<a type="button" class="btn btn-outline-danger btn-sm" asp-controller="Order"
 								asp-action="Create" asp-route-id="@customer.Id">Create order</a>
 						</td>
 					</tr>

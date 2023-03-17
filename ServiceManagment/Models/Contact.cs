@@ -9,7 +9,7 @@ namespace ServiceManagment.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Phone number cannot be empty!")]
-        [RegularExpression(@"(\d{3}).*(\d{3}).*(\d{3})", ErrorMessage = "Wrong phone number!")]
+        [RegularExpression(@"(\d{3}).?(\d{3}).?(\d{3})", ErrorMessage = "Wrong phone number!")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "E-mail address cannot be empty!")]

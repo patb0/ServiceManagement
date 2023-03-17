@@ -3,9 +3,49 @@
 @{
 }
 
-<h1>REGISTER VIEW</h1>
 
-<form method="post" asp-action="Register" asp-controller="Account">
+<html>
+    <head>
+        @*add meta*@
+    </head>
+    <body class="bg-dark text-white">
+        <div class="text-center fs-1">
+            <h1 class="display-3">Add new worker</h1>
+        </div>
+        <div class="container" style="margin-left: 37%; margin-top: 2%;">
+            <form method="post">
+                <div class=" text-center col-md-3 mt-3">
+                    @if(TempData["Error"] != null)
+                    {
+                        <div>
+                            <span class="text-danger">@TempData["Error"]</span>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-3 mt-4">
+                    <label class="form-label">Email address</label>
+                    <input type="text" class="form-control" asp-for="EmailAddress" placeholder="Email address"/>
+                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mt-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" asp-for="Password" placeholder="Password"/>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mt-3">
+                    <label class="form-label">Confirm password</label>
+                    <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Confirm password"/>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mt-4 bg-dark">
+                    <input type="submit" class="form-control btn btn-outline-success btn-lg" value="Sign up" />
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
+
+@*<form method="post" asp-action="Register" asp-controller="Account">
     <div class="form-group">
         <label class="form-label">Email address</label>
         <input type="text" asp-for="EmailAddress" />
@@ -24,4 +64,4 @@
     <div class="form-group">
         <input type="submit" class="btn btn-primary" value="Sign up" />
     </div>
-</form>
+</form>*@

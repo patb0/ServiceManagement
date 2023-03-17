@@ -4,7 +4,108 @@
 @{
 }
 
-<form method="post" asp-action="Edit">
+<html>
+    <head>
+       @* add meta*@
+    </head>
+    <body class="bg-dark text-white">
+        <div class="text-center fs-1">
+            <h1 class="display-3">Edit customer</h1>
+        </div>
+        <div class="container" style="margin-left: 20%; margin-top: 2%">
+            <form method="post" asp-action="Edit">
+                <input asp-for="@Model.Id" hidden />
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">User type</label>
+                        <select asp-for="@Model.CustomerType" asp-items="Html.GetEnumSelectList<CustomerType>()" class="form-control">
+                        </select>
+                    </div>  
+                    <div class="col-md-3">
+                        <label class="form-label">User group</label>
+                        <select asp-for="@Model.CustomerGroup" asp-items="Html.GetEnumSelectList<CustomerGroup>()" class="form-control">
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" asp-for="@Model.Name">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">NIP</label>
+                        <input type="text" class="form-control" asp-for="@Model.NIP">
+                        <span asp-validation-for="NIP" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Description</label>
+                        <textarea type="text" class="form-control" asp-for="@Model.Description" style="resize: none" rows="4">
+                        </textarea>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-label">Email address</label>
+                                <input type="text" class="form-control" asp-for="@Model.Contact.EmailAddress">
+                                <span asp-validation-for="Contact.EmailAddress" class="text-danger"></span>
+                            </div>
+                        </div>
+                    
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Phone number</label>
+                                <input type="text" class="form-control" asp-for="@Model.Contact.PhoneNumber">
+                                <span asp-validation-for="Contact.PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Second number</label>
+                                <input type="text" class="form-control" asp-for="@Model.Contact.SecondPhoneNumber">
+                                <span asp-validation-for="Contact.SecondPhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" asp-for="@Model.Address.City">
+                        <span asp-validation-for="Address.City" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Postal code</label>
+                        <input type="text" class="form-control" asp-for="@Model.Address.PostalCode">
+                        <span asp-validation-for="Address.PostalCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Street</label>
+                        <input type="text" class="form-control" asp-for="@Model.Address.Street">
+                        <span asp-validation-for="Address.Street" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Flat number</label>
+                        <input type="text" class="form-control" asp-for="@Model.Address.FlatNumber">
+                        <span asp-validation-for="Address.FlatNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2 mt-3">
+                        <input type="submit" class="form-control btn btn-outline-success" value="Save" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
+
+
+@*<form method="post" asp-action="Edit">
     <div class="form-group">
         <label class="form-label">User ID</label>
         <input type="text" class="form-control" asp-for="@Model.Id"  readonly>
@@ -72,6 +173,6 @@
         <span asp-validation-for="Address.FlatNumber" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Save changes</button>
-</form>
+</form>*@
 
 
