@@ -6,6 +6,7 @@
 @{
 }
 <form method="post" asp-action="EditOrderPayment">
+    <input type="number" asp-for="@Model.Id" hidden />
     <div class="form-group">
         <label class="form-label">Paid</label>
         <input type="text" class="form-control" asp-for="@Model.Paid" readonly/>

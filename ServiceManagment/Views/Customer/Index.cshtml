@@ -21,6 +21,12 @@
                         <button type="submit" class="btn btn-outline-danger">Search</button>
                     </div>
                 </div>
+				<div class="row mt-1">
+					@if(TempData["Error"] != null)
+					{
+						<span class="text-danger">@TempData["Error"]</span>
+					}
+				</div>
             </form>
         </div>
 		<div class="row mb-5 text-left">

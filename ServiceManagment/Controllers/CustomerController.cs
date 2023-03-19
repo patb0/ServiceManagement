@@ -24,12 +24,16 @@ namespace ServiceManagment.Controllers
                 var customers = await _customerRepository.GetAllCustomersBySearchKeyAsync(searchKey);
                 if(customers.Count() != 0)
                 {
-                    ViewData["CurrentKey"] = searchKey;
-                    return View(customers);
+					ViewData["CurrentKey"] = searchKey;
+
+					return View(customers);
                 }
                 else
                 {
-                    return View(await _customerRepository.GetAllCustomersAsync());
+                    ViewData["CurrentKey"] = searchKey;
+					TempData["Error"] = "No results!";
+
+					return View(await _customerRepository.GetAllCustomersAsync());
                 }
             }
 
@@ -39,7 +43,10 @@ namespace ServiceManagment.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            var currentUserId = HttpContext.User.GetUserId();
+            var addCustomerViewModel = new AddCustomerViewModel { WorkerId = currentUserId};
+
+            return View(addCustomerViewModel);
         }
 
         [HttpPost]
@@ -63,6 +70,7 @@ namespace ServiceManagment.Controllers
                     Address = addCustomerVM.Address,
                     Contact = addCustomerVM.Contact,
                     Orders = addCustomerVM.Orders,
+                    WorkerId = addCustomerVM.WorkerId,
                 };
 
                 _customerRepository.Add(customer);
@@ -139,13 +147,23 @@ namespace ServiceManagment.Controllers
             return View("Error");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
+        {
+            var customer = await _customerRepository.GetCustomerByIdAsync(id);
+
+            return View(customer);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
             var customerToDelete = await _customerRepository.GetCustomerByIdAsync(id);
 
             if (customerToDelete != null)
             {
                 _customerRepository.Delete(customerToDelete);
+
                 return RedirectToAction("Index");
             }
 

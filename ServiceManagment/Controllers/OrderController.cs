@@ -31,6 +31,9 @@ namespace ServiceManagment.Controllers
                 }
                 else
                 {
+                    ViewData["CurrentKey"] = searchKey;
+                    TempData["Error"] = "No results!";
+
                     return View(await _orderRepository.GetAllOrdersAsync());
                 }
             }
@@ -164,6 +167,7 @@ namespace ServiceManagment.Controllers
             {
                 var editOrderPaymentVM = new EditOrderPaymentViewModel
                 {
+                    Id = id,
                     Paid = order.Payment.Paid,
                     ToPay = order.Payment.ToPay,
                 };

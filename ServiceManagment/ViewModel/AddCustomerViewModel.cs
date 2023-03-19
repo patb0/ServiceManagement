@@ -23,5 +23,6 @@ namespace ServiceManagment.ViewModel
         public Address Address { get; set; }
         public Contact Contact { get; set; }
         public ICollection<Order>? Orders { get; set; }
+        public string WorkerId { get; set; }
     }
 }
