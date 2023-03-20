@@ -1,0 +1,47 @@
+﻿@model ServiceManagment.ViewModel.DetailWorkerViewModel
+
+@{
+}
+
+<html>
+    <head>
+       @* add meta*@
+    </head>
+    <body class="bg-dark text-white">
+        <div class="text-center fs-1">
+            <h1 class="display-3">Worker detail</h1>
+        </div>
+        <div class="container" style="margin-left: 20%; margin-top: 2%">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label">Created at</label>
+                    <input type="text" class="form-control" asp-for="@Model.CreatedAt" readonly>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" asp-for="@Model.Name" readonly>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">&nbsp;</label>
+                    <a type="button" class="form-control btn btn-outline-success" asp-controller="Worker"
+                        asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <label class="form-label">Phone number</label>
+                    <input type="text" class="form-control" asp-for="@Model.PhoneNumber" readonly>
+                </div>  
+                <div class="col-md-3">
+                    <label class="form-label">Email address</label>
+                    <input type="text" class="form-control" asp-for="@Model.EmailAddress" readonly>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">&nbsp;</label>
+                    <a type="button" class="form-control btn btn-outline-danger" asp-controller="Worker"
+                        asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

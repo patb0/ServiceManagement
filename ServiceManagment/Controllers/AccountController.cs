@@ -51,13 +51,16 @@ namespace ServiceManagment.Controllers
             {
                 UserName = registerWorkerVM.EmailAddress,
                 Email = registerWorkerVM.EmailAddress,
+                Name = registerWorkerVM.Name,
+                CreatedAt = DateTime.Now,
+                PhoneNumber = registerWorkerVM.PhoneNumber,
             };
 
             var newWorker = await _userManager.CreateAsync(worker, registerWorkerVM.Password);
           
             if(newWorker.Succeeded)
             {
-                await _userManager.AddToRoleAsync(worker, WorkerRoles.Worker);
+                await _userManager.AddToRoleAsync(worker, WorkerRoles.Admin);
             }
 
             return RedirectToAction("Index", "Customer");

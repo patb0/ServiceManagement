@@ -88,9 +88,43 @@ namespace ServiceManagment.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var customerDetail = await _customerRepository.GetCustomerByIdAsync(id);
+            var customer = await _customerRepository.GetCustomerByIdAsync(id);
+            var workerName = await _customerRepository.GetWorkerNameById(customer.WorkerId);
 
-            return customerDetail == null ? View("Error") : View(customerDetail);
+            if(customer != null)
+            {
+                var detailCustomerVM = new DetailCustomerViewModel()
+                {
+                    Id = customer.Id,
+                    Name = customer.Name,
+                    NIP = customer.NIP,
+                    UserAdded = customer.UserAdded,
+                    Description = customer.Description,
+                    CustomerGroup = customer.CustomerGroup,
+                    CustomerType = customer.CustomerType,
+                    Address = new Address()
+                    {
+                        City = customer.Address.City,
+                        PostalCode = customer.Address.PostalCode,
+                        Street = customer.Address.Street,
+                        FlatNumber = customer.Address.FlatNumber,
+                    },
+                    Contact = new Contact()
+                    {
+                        EmailAddress = customer.Contact.EmailAddress,
+                        PhoneNumber = customer.Contact.PhoneNumber,
+                        SecondPhoneNumber = customer.Contact.SecondPhoneNumber,
+                    },
+                    WorkerId = customer.WorkerId,
+                    WorkerName = workerName,
+                };
+
+                return View(detailCustomerVM);
+            }
+
+            return View("Error");
+
+            //return customerDetail == null ? View("Error") : View(customerDetail);
         }
 
         [HttpGet]

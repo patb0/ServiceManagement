@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ServiceManagment.Models.Worker>
+
+@{
+}
+
+<html>
+    <head>
+		@*add meta*@
+    </head>
+    <body class="bg-dark text-white">
+        <div class="text-center fs-1">
+            <p class="display-3">Workers</p>
+        </div>
+		<table class="table text-white">
+			<thead class="bg-white text-dark">
+				<tr>
+					<th>Add</th>
+					<th>Name</th>
+					<th>Email address</th>
+					<th>Phone number</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var worker in Model)
+				{		
+					<tr>
+						<td>@worker.CreatedAt</td>
+						<td>@worker.Name</td>
+						<td>@worker.Email</td>
+						<td>@worker.PhoneNumber</td>
+						<td>
+							<a type="button" class="btn btn-outline-success btn-sm" asp-controller="Worker"
+								asp-action="Detail" asp-route-id="@worker.Id">Detail</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,38 @@
+﻿@model ServiceManagment.ViewModel.DeleteWorkerViewModel
+
+@{
+}
+
+<html>
+    <head>
+
+    </head>
+    <body>
+        <div class="container text-center text-white">
+            <div class="row">
+                <span class="text-danger mb-3">
+                    <h3>You want to delete worker?</h3>
+                </span>
+                <div class="container">
+                    <form method="post" asp-action="DeleteWorker">
+                        <input type="text" asp-for="@Model.Id" hidden />
+                        <div class="col md-3">
+                            <label class="form-label fs-5">@Model.CreatedAt</label>
+                        </div>
+                        <div class="col md-3">
+                            <label class="form-label fs-1"><b>@Model.Name</b></label>
+                        </div>
+                        <div class="col-md-2 mt-4" style="margin-left: 42%">
+                            <div class="row">
+                                <input type="submit" class="form-control btn btn-outline-danger btn-lg" value="Confirm" />
+                            </div>
+                            <div class="row mt-4">
+                                <input type="submit" class="form-control btn btn-outline-success btn-lg" asp-action="Detail" asp-route-id="@Model.Id" value="Back" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

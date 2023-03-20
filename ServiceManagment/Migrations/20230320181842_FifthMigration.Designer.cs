@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceManagment.Data;
 
@@ -11,9 +12,11 @@ using ServiceManagment.Data;
 namespace ServiceManagment.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230320181842_FifthMigration")]
+    partial class FifthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -365,6 +368,9 @@ namespace ServiceManagment.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ContactId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -396,7 +402,6 @@ namespace ServiceManagment.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -413,6 +418,8 @@ namespace ServiceManagment.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ContactId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -530,6 +537,15 @@ namespace ServiceManagment.Migrations
                     b.Navigation("Payment");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ServiceManagment.Models.Worker", b =>
+                {
+                    b.HasOne("ServiceManagment.Models.Contact", "Contact")
+                        .WithMany()
+                        .HasForeignKey("ContactId");
+
+                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Customer", b =>

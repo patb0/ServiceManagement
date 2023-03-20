@@ -1,0 +1,49 @@
+﻿@model ServiceManagment.ViewModel.EditWorkerViewModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<html>
+    <head>
+       @* add meta*@
+    </head>
+    <body class="bg-dark text-white">
+        <div class="text-center fs-1">
+            <h1 class="display-3">Worker detail</h1>
+        </div>
+        <div class="container" style="margin-left: 20%; margin-top: 2%">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Created at</label>
+                        <input type="text" class="form-control" asp-for="@Model.CreatedAt" readonly>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" asp-for="@Model.Name">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Phone number</label>
+                        <input type="text" class="form-control" asp-for="@Model.PhoneNumber">
+                    </div>  
+                    <div class="col-md-3">
+                        <label class="form-label">Email address</label>
+                        <input type="text" class="form-control" asp-for="@Model.EmailAddress">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-3">
+                        <input type="submit" class="form-control btn btn-outline-success" value="Submit" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ServiceManagment.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServiceManagment.ViewModel
 {
@@ -17,5 +19,13 @@ namespace ServiceManagment.ViewModel
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords are different!")]
         public string ConfirmPassword { get; set; }
+
+		[Required(ErrorMessage = "Worker name cannot be empty!")]
+		public string? Name { get; set; }
+		public DateTime CreatedAt { get; set; }
+
+		[Required(ErrorMessage = "Phone number cannot be empty!")]
+		[RegularExpression(@"(\d{3}).?(\d{3}).?(\d{3})", ErrorMessage = "Wrong phone number!")]
+		public string PhoneNumber { get; set; }
     }
 }

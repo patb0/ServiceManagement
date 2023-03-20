@@ -23,6 +23,16 @@
                     }
                 </div>
                 <div class="col-md-3 mt-4">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" asp-for="Name" placeholder="Worker name"/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mt-4">
+                    <label class="form-label">Phone number</label>
+                    <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Phone number"/>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mt-4">
                     <label class="form-label">Email address</label>
                     <input type="text" class="form-control" asp-for="EmailAddress" placeholder="Email address"/>
                     <span asp-validation-for="EmailAddress" class="text-danger"></span>

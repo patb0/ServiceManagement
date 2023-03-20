@@ -82,7 +82,13 @@ namespace ServiceManagment.Repository
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public bool Save()
+		public async Task<string> GetWorkerNameById(string id)
+		{
+            return await _context.Users.Where(x => x.Id == id)
+                .Select(i => i.Name).FirstOrDefaultAsync();
+		}
+
+		public bool Save()
         {
             var saved = _context.SaveChanges();
             return saved > 0;
