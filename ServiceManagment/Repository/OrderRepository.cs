@@ -92,5 +92,11 @@ namespace ServiceManagment.Repository
                 .OrderByDescending(x => x.OrderAdded.Date)
                 .ToListAsync();
         }
+
+        public async Task<string> GetWorkerById(string id)
+        {
+            return await _context.Users.Where(x => x.Id == id)
+                .Select(i => i.Name).FirstOrDefaultAsync();
+        }
     }
 }

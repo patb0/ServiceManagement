@@ -9,6 +9,7 @@ namespace ServiceManagment.Interfaces
         Task<IEnumerable<Order>> GetAllOrdersByStatus(string status);
         Task<Order> GetPaymentByOrderIdAsync(int id);
         Task<IEnumerable<Order>> GetAllOrdersBySearchKey(string searchKey);
+        Task<string> GetWorkerById(string id);
         bool Add(Order order);
         bool Update(Order order);
         bool Delete(Order order);

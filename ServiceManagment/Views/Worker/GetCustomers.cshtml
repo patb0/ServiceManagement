@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ServiceManagment.Models.Customer>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<html>
+    <head>
+		@*add meta*@
+    </head>
+    <body class="bg-dark text-white">
+        <div class="text-center fs-1">
+            <p class="display-6">Customers added by @User.Identity.Name</p>
+        </div>
+		<div class="row mb-5 text-left">
+            <div class="form-group col-md-10 fs-1">
+                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Worker" 
+                asp-action="GetCustomers" asp-route-id="@User.GetUserId()">Customers</a>
+
+                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Worker" 
+                asp-action="GetOrders" asp-route-id="@User.GetUserId()">Orders</a>
+            </div>
+        </div>
+		<table class="table text-white">
+			<thead class="bg-white text-dark">
+				<tr>
+					<th>ID</th>
+					<th>Added</th>
+					<th>Name</th>
+					<th>Group</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var customer in Model)
+				{		
+					<tr>
+						<th scope="row">@customer.Id</th>
+						<td>@customer.UserAdded</td>
+						<td>@customer.Name</td>
+						<td>@customer.CustomerGroup</td>
+						<td>
+							<a type="button" class="btn btn-outline-success btn-sm" asp-controller="Customer"
+								asp-action="Detail" asp-route-id="@customer.Id">Detail</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</body>
+</html>

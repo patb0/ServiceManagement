@@ -21,12 +21,6 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>*@
-                        @*<li class="nav-item">
-                            <a class="nav-link text-white fs-5" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
                         </li>
@@ -38,15 +32,35 @@
                         </li>
                         @if(User.IsInRole("Admin"))
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Add worker</a>
-                        </li>  
+                            <li class="nav-item ms-5">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Worker" asp-action="Index">Workers</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Add worker</a>
+                            </li>  
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                        </li>
                     </ul>
                 </div>
+                <div class="dropdown">
+                    <a class="btn btn-outline-danger text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">@User.Identity.Name</a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" asp-controller="Worker" asp-action="Detail" asp-route-id="@User.GetUserId()">Detail profile</a>
+                        </li>
+                        @if(User.IsInRole("Admin"))
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Worker" asp-action="Edit" asp-route-id="@User.GetUserId()">Edit profile</a>
+                            </li>       
+                        }
+                        <li>
+                            <a class="dropdown-item" asp-controller="Worker" asp-action="GetCustomers" asp-route-id="@User.GetUserId()">History</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>     
             </div>
         </nav>
         }

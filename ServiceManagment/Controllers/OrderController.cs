@@ -44,7 +44,12 @@ namespace ServiceManagment.Controllers
         [HttpGet]
         public IActionResult Create(int id)
         {
-            var orderViewModel = new CreateOrderViewModel { CustomerId = id };
+            var currentWorkerId = HttpContext.User.GetUserId();
+            var orderViewModel = new CreateOrderViewModel 
+            {
+                CustomerId = id,
+                WorkerId = currentWorkerId,
+            };
 
             return View(orderViewModel);
         }
@@ -76,7 +81,8 @@ namespace ServiceManagment.Controllers
                     {
                         ToPay = orderViewModel.Payment.ToPay,
                         Paid = 0,
-                    }
+                    },
+                    WorkerId = orderViewModel.WorkerId,
                 };
 
                 _orderRepository.Add(order);
@@ -88,9 +94,27 @@ namespace ServiceManagment.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var orderDetail = await _orderRepository.GetOrderByIdAsync(id);
+            var order = await _orderRepository.GetOrderByIdAsync(id);
+            var workerName = await _orderRepository.GetWorkerById(order.WorkerId);
 
-            return orderDetail == null ? View("Error") : View(orderDetail);
+            if(order != null)
+            {
+                var detailOrderVM = new DetailOrderViewModel()
+                {
+                    Id = order.Id,
+                    OrderStatus = order.OrderStatus,
+                    OrderAdded = order.OrderAdded,
+                    Customer = order.Customer,
+                    Product = order.Product,
+                    Payment = order.Payment,
+                    WorkerId = order.WorkerId,
+                    WorkerName = workerName,
+                };
+
+                return View(detailOrderVM);
+            }
+
+            return View("Error");
         }
 
         [HttpGet]

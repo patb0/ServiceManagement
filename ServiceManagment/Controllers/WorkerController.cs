@@ -122,5 +122,20 @@ namespace ServiceManagment.Controllers
 
 			return View("Error");
 		}
+
+
+		public async Task<IActionResult> GetCustomers(string id)
+		{
+			var customers = await _workerRepository.GetAllCustomersByWorkerId(id);
+
+			return View(customers);
+		}
+
+		public async Task<IActionResult> GetOrders(string id)
+		{
+			var orders = await _workerRepository.GetAllOrdersByWorkerId(id);
+
+			return View(orders);
+		}
 	}
 }
