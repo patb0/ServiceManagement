@@ -3,16 +3,80 @@
 
 @{
 }
+<html>
+    <head>
 
-<form method="post" asp-action="Edit">
-    <div class="form-group">
-        <label class="form-label">ID</label>
-        <input type="text" class="form-control" asp-for="@Model.Id" readonly/>
-    </div>
-    <div class="form-group">
-        <label class="form-label">Owner</label>
-        <input type="text" class="form-control" asp-for="@Model.CustomerName" readonly/>
-    </div>
+    </head>
+    <body class="bg-dark text-white">
+        <div class="text-center fs-1">
+            <h1 class="display-3">Edit order</h1>
+        </div>
+        <div class="container" style="margin-left: 25%">
+            <form method="post" asp-action="Edit">
+                <input type="number" asp-for="@Model.Id" hidden />
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-control" asp-for="@Model.OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()">
+
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Type</label>
+                        <select class="form-control" asp-for="@Model.Product.ProductType" asp-items="Html.GetEnumSelectList<ProductType>()">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Procuder name</label>
+                        <input class="form-control" asp-for="@Model.Product.ProducerName" />
+                        <span asp-validation-for="Product.ProducerName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Model</label>
+                        <input type="text" class="form-control" asp-for="@Model.Product.Model" />
+                        <span asp-validation-for="Product.Model" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Product description</label>
+                        <textarea type="text" class="form-control" asp-for="@Model.Product.Description" style="resize: none" rows="4" value="-">
+
+                        </textarea>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="col-md-12">
+                            <label class="form-label">Serial number</label>
+                            <input type="text" class="form-control" asp-for="@Model.Product.SerialNumber" />
+                            <span asp-validation-for="Product.SerialNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Fault</label>
+                            <input type="text" class="form-control" asp-for="@Model.Product.Fault" />
+                            <span asp-validation-for="Product.Fault" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">&nbsp;</label>
+                        <input type="submit" class="form-control btn btn-outline-success" value="Confirm" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
+
+
+@*<form method="post" asp-action="Edit">
+    <input type="number" asp-for="@Model.Id" hidden />
     <div class="form-group">
         <label class="form-label">Status</label>
         <select class="form-control" asp-for="@Model.OrderStatus" asp-items="Html.GetEnumSelectList<OrderStatus>()"></select>
@@ -46,4 +110,4 @@
         <input type="text" class="form-control" asp-for="@Model.Product.Description" />
     </div>
     <button type="submit" class="btn btn-danger">Save</button>
-</form>
+</form>*@

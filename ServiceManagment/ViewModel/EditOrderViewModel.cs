@@ -8,7 +8,6 @@ namespace ServiceManagment.ViewModel
     {
         public int Id { get; set; }
         public OrderStatus OrderStatus { get; set; }
-        public string CustomerName { get; set; }
         public Product Product { get; set; }
     }
 }

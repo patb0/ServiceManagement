@@ -19,11 +19,11 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Added by</label>
-                    <input type="text" class="form-control bg-dark border-1 border-info text-white" asp-for="@Model.WorkerName" readonly>
+                    <input type="text" class="form-control bg-dark border-1 border-secondary text-white" asp-for="@Model.WorkerName" readonly>
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">&nbsp;</label>
-                    <a type="button" class="form-control btn btn-outline-info" asp-controller="Worker"
+                    <a type="button" class="form-control btn btn-outline-secondary" asp-controller="Worker"
                         asp-action="Detail" asp-route-id="@Model.WorkerId">Profile</a>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                     <input type="text" class="form-control" asp-for="@Model.Id" readonly>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Added</label>
+                    <label class="form-label">Added at</label>
                     <input type="text" class="form-control" asp-for="@Model.OrderAdded" readonly>
                 </div>
                 <div class="col-md-2">
@@ -56,7 +56,7 @@
                     <input type="text" class="form-control" asp-for="@Model.OrderStatus" readonly>
                 </div>  
                 <div class="col-md-3">
-                    <label class="form-label">Customer</label>
+                    <label class="form-label">Customer name</label>
                     <input type="text" class="form-control" asp-for="@Model.Customer.Name" readonly>
                 </div>
                 <div class="col-md-2">
@@ -71,7 +71,7 @@
                     <input type="text" class="form-control" asp-for="@Model.Product.ProductType" readonly>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Producer</label>
+                    <label class="form-label">Producer name</label>
                     <input type="text" class="form-control" asp-for="@Model.Product.ProducerName" readonly>
                 </div>
                 <div class="col-md-2">
@@ -97,17 +97,17 @@
             </div>
             <div class="row mt-3">
                 <div class="col-md-3">
-                    <label class="form-label">City</label>
+                    <label class="form-label">Product Description</label>
                     <textarea type="text" class="form-control" asp-for="@Model.Product.Description" style="resize: none" rows="4" readonly>
 
                     </textarea>
                 </div>
                 <div class="col-md-3">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <label class="form-label">Product fault</label>
                         <input type="text" class="form-control" asp-for="@Model.Product.Fault" readonly>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <label class="form-label">Total cost</label>
                         <input type="number" class="form-control" asp-for="@Model.Payment.ToPay" readonly/>
                     </div>

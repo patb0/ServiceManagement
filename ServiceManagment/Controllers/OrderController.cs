@@ -124,12 +124,13 @@ namespace ServiceManagment.Controllers
 
             if(order != null)
             {
-                var editOrderVM = new EditOrderViewModel
+                var editOrderVM = new EditOrderViewModel 
                 {
                     Id = order.Id,
-                    CustomerName = order.Customer.Name,
+                    OrderStatus = order.OrderStatus,
                     Product = order.Product,
                 };
+
                 return View(editOrderVM);
             }
 
@@ -226,6 +227,45 @@ namespace ServiceManagment.Controllers
 
                     return RedirectToAction("Index");
                 }
+            }
+
+            return View("Error");
+        }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var order = await _orderRepository.GetOrderByIdAsync(id);
+
+            if(order != null)
+            {
+                var deleteOrderVM = new DeleteOrderViewModel()
+                {
+                    Id = order.Id,
+                    CustomerName = order.Customer.Name,
+                    PoducerName = order.Product.ProducerName,
+                    ModelName = order.Product.Model,
+                    OrderAdded = order.OrderAdded,
+                };
+
+                return View(deleteOrderVM);
+            }
+
+            return View("Error");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            var order = await _orderRepository.GetOrderByIdAsync(id);
+
+            if(order != null) 
+            {
+                _orderRepository.Delete(order);
+
+                return RedirectToAction("Index");
             }
 
             return View("Error");
