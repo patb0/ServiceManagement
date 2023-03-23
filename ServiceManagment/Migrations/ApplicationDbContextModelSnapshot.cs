@@ -353,6 +353,38 @@ namespace ServiceManagment.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("ServiceManagment.Models.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("PaymentId");
+
+                    b.ToTable("Services");
+                });
+
             modelBuilder.Entity("ServiceManagment.Models.Worker", b =>
                 {
                     b.Property<string>("Id")
@@ -534,9 +566,31 @@ namespace ServiceManagment.Migrations
                     b.Navigation("Worker");
                 });
 
+            modelBuilder.Entity("ServiceManagment.Models.Service", b =>
+                {
+                    b.HasOne("ServiceManagment.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("ServiceManagment.Models.Payment", "Payment")
+                        .WithMany("Services")
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Payment");
+                });
+
             modelBuilder.Entity("ServiceManagment.Models.Customer", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("ServiceManagment.Models.Payment", b =>
+                {
+                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Worker", b =>

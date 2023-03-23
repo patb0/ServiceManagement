@@ -12,10 +12,12 @@ namespace ServiceManagment.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IServiceRepository _serviceRepository;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IOrderRepository orderRepository, IServiceRepository paymentRepository)
         {
             _orderRepository = orderRepository;
+            _serviceRepository = paymentRepository;
         }
 
         public async Task<IActionResult> Index(string searchKey)
@@ -79,7 +81,7 @@ namespace ServiceManagment.Controllers
                     },
                     Payment = new Payment
                     {
-                        ToPay = orderViewModel.Payment.ToPay,
+                        ToPay = orderViewModel.Payment.ToPay > 0 ? orderViewModel.Payment.ToPay : 0,
                         Paid = 0,
                     },
                     WorkerId = orderViewModel.WorkerId,
@@ -176,26 +178,23 @@ namespace ServiceManagment.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> DetailOrderPayment (int id)
-        {
-            var orderPayment = await _orderRepository.GetPaymentByOrderIdAsync(id);
-
-            return orderPayment == null ? View("Error") : View(orderPayment);
-        }
-
         [HttpGet]
         public async Task<IActionResult> EditOrderPayment (int id)
         {
-            var order = await _orderRepository.GetOrderByIdAsync(id);
-
-            if( order != null )
+            var orderPayment = await _orderRepository.GetPaymentByOrderIdAsync(id);
+            var services = await _serviceRepository.GetAllServicesByPaymentId(orderPayment.PaymentId);
+            
+            if( orderPayment != null)
             {
-                var editOrderPaymentVM = new EditOrderPaymentViewModel
+                var editOrderPaymentVM = new EditOrderPaymentViewModel()
                 {
-                    Id = id,
-                    Paid = order.Payment.Paid,
-                    ToPay = order.Payment.ToPay,
+                    PaymentId = orderPayment.PaymentId,
+                    OrderId = id,
+                    ToPay = orderPayment.Payment.ToPay,
+                    Paid = orderPayment.Payment.Paid,
+                    Services = services,
                 };
+
                 return View(editOrderPaymentVM);
             }
 
@@ -205,34 +204,37 @@ namespace ServiceManagment.Controllers
         [HttpPost]
         public async Task<IActionResult> EditOrderPayment (int id, EditOrderPaymentViewModel editOrderPaymentVM)
         {
-            if(!ModelState.IsValid)
+            //payment repo?
+            if (!ModelState.IsValid)
             {
                 return View(editOrderPaymentVM);
             }
             else
             {
-                var order = await _orderRepository.GetOrderByIdAsync(id);
+                var order = await _orderRepository.GetPaymentByOrderIdAsync(id);
+
                 if (order != null)
                 {
-                    if (order.Payment.ToPay < editOrderPaymentVM.ToPay)
+                    var service = new Service()
                     {
-                        order.Payment.ToPay += editOrderPaymentVM.ToPay - order.Payment.ToPay;
-                    }
-                    else
-                    {
-                        order.Payment.Paid += order.Payment.ToPay - editOrderPaymentVM.ToPay;
-                        order.Payment.ToPay = editOrderPaymentVM.ToPay;
-                    }
-                    _orderRepository.Update(order);
+                        PaymentId = editOrderPaymentVM.PaymentId,
+                        OrderId = id,
+                        Name = editOrderPaymentVM.Name,
+                        Price = editOrderPaymentVM.Price,
+                        Status = ServiceStatus.NotPaid,
+                    };
 
-                    return RedirectToAction("Index");
+                    order.Payment.ToPay += service.Price;
+
+                    _orderRepository.Update(order);
+                    _serviceRepository.Update(service);
+
+                    return RedirectToAction("EditOrderPayment", new {@id = id});
                 }
             }
 
             return View("Error");
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)

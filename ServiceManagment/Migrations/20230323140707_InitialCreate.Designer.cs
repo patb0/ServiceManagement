@@ -12,8 +12,8 @@ using ServiceManagment.Data;
 namespace ServiceManagment.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230319203959_FourthMigration")]
-    partial class FourthMigration
+    [Migration("20230323140707_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -282,6 +282,9 @@ namespace ServiceManagment.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<string>("WorkerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
@@ -289,6 +292,8 @@ namespace ServiceManagment.Migrations
                     b.HasIndex("PaymentId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("Orders");
                 });
@@ -351,6 +356,38 @@ namespace ServiceManagment.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("ServiceManagment.Models.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("PaymentId");
+
+                    b.ToTable("Services");
+                });
+
             modelBuilder.Entity("ServiceManagment.Models.Worker", b =>
                 {
                     b.Property<string>("Id")
@@ -362,6 +399,9 @@ namespace ServiceManagment.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -376,6 +416,9 @@ namespace ServiceManagment.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -388,6 +431,7 @@ namespace ServiceManagment.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -512,11 +556,34 @@ namespace ServiceManagment.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ServiceManagment.Models.Worker", "Worker")
+                        .WithMany("Orders")
+                        .HasForeignKey("WorkerId");
+
                     b.Navigation("Customer");
 
                     b.Navigation("Payment");
 
                     b.Navigation("Product");
+
+                    b.Navigation("Worker");
+                });
+
+            modelBuilder.Entity("ServiceManagment.Models.Service", b =>
+                {
+                    b.HasOne("ServiceManagment.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("ServiceManagment.Models.Payment", "Payment")
+                        .WithMany("Services")
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Customer", b =>
@@ -524,9 +591,16 @@ namespace ServiceManagment.Migrations
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("ServiceManagment.Models.Payment", b =>
+                {
+                    b.Navigation("Services");
+                });
+
             modelBuilder.Entity("ServiceManagment.Models.Worker", b =>
                 {
                     b.Navigation("Customers");
+
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

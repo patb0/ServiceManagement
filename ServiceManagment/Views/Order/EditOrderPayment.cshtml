@@ -1,22 +1,104 @@
 ﻿@model ServiceManagment.ViewModel.EditOrderPaymentViewModel
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
 }
-<form method="post" asp-action="EditOrderPayment">
-    <input type="number" asp-for="@Model.Id" hidden />
-    <div class="form-group">
-        <label class="form-label">Paid</label>
-        <input type="text" class="form-control" asp-for="@Model.Paid" readonly/>
-    </div>
-    <div class="form-group">
-        <label class="form-label">To pay</label>
-        <input type="text" class="form-control" asp-for="@Model.ToPay"/>
-        <span asp-validation-for="ToPay" class="text-danger"></span>
-    </div>
 
-    <button type="submit" class="btn btn-danger">Save</button>
-</form>
+<html>
+    <head>
+       @* add meta*@
+    </head>
+    <body class="bg-dark text-white">
+        <div class="text-center fs-1">
+            <h1 class="display-3">Payment</h1>
+        </div>
+        <div class="container" style="margin-left: 6%; margin-top: 2%">
+            <div class="row mb-3">
+                <div class="col-md-2 input-group-sm">
+                    <small class="help-block">To pay for order</small>
+                    <input type="number" class="form-control" asp-for="@Model.ToPay" readonly/>
+                </div>
+                <div class="col-md-2 input-group-sm">
+                    <small class="help-block">Paid by customer</small>
+                    <input type="number" class="form-control" asp-for="@Model.Paid" readonly/>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <form method="post">
+                    <input asp-for="@Model.PaymentId" hidden/>
+                    <input asp-for="@Model.OrderId" hidden/>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" asp-for="@Model.Name" />
+                            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Price</label>
+                            <input type="text" class="form-control" asp-for="@Model.Price" />
+                            <span asp-validation-for="@Model.Price" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">&nbsp;</label>
+                            <input type="submit" class="form-control btn btn-outline-success" value="Add" />
+                        </div>
+                    </div>
+                </form>
+            </div>
 
+            <table class="table text-white">
+                <thead class="bg-white text-dark">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if (ViewData.ModelState.IsValid)
+                {
+                    @foreach(var service in Model.Services)
+                    {   
+                        <tr>
+                            <td>@service.Name</td>
+                            <td>@service.Price ,-</td>
+                            @if(service.Status == ServiceManagment.Data.Enum.ServiceStatus.NotPaid)
+                            {
+                                <td class="text-danger">@service.Status</td>
+                            }
+                            else
+                            {
+                                <td class="text-success">@service.Status</td>
+                            }
+                            <td>
+                                <a type="button" class="btn btn-outline-success btn-sm" asp-controller="Service"
+                                    asp-action="Edit" asp-route-id="@service.Id">Edit</a>
+                            </td>
+                            <td>
+                                @if(service.Status == ServiceManagment.Data.Enum.ServiceStatus.NotPaid)
+                                {
+                                    <a type="button" class="btn btn-outline-info btn-sm" asp-controller="Service"
+                                        asp-action="Paid" asp-route-id="@service.Id">Paid</a>
+                                }
+                                else
+                                {
+                                    <a type="button" class="btn btn-outline-info btn-sm disabled" asp-controller="Service"
+                                        asp-action="Paid" asp-route-id="@service.Id">Paid</a>
+                                }
+                            </td>
+                            <td>
+                                <a type="button" class="btn btn-outline-danger btn-sm" asp-controller="Service"
+                                    asp-action="Delete" asp-route-id="@service.Id">Delete</a>
+                            </td>
+                        </tr>   
+                    }
+                }
+                
+                </tbody>
+            </table>
+
+        </div>
+    </body>
+</html>

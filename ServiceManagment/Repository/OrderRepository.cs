@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using ServiceManagment.Data;
 using ServiceManagment.Data.Enum;
 using ServiceManagment.Interfaces;
@@ -97,6 +98,13 @@ namespace ServiceManagment.Repository
         {
             return await _context.Users.Where(x => x.Id == id)
                 .Select(i => i.Name).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Service>> GetAllServicesByPaymentId(int id)
+        {
+            return await _context.Services
+                .Where(i => i.Id == id)
+                .ToListAsync();
         }
     }
 }

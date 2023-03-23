@@ -23,7 +23,7 @@ namespace ServiceManagment.Controllers
             _dbContext = dbContext;
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -60,7 +60,7 @@ namespace ServiceManagment.Controllers
           
             if(newWorker.Succeeded)
             {
-                await _userManager.AddToRoleAsync(worker, WorkerRoles.Admin);
+                await _userManager.AddToRoleAsync(worker, WorkerRoles.Worker);
             }
 
             return RedirectToAction("Index", "Customer");

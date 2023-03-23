@@ -22,6 +22,7 @@ namespace ServiceManagment.Models
         [ForeignKey("Payment")]
         public int PaymentId { get; set; }
         public Payment Payment { get; set; }
+
         public string? WorkerId { get; set; }
         public Worker Worker { get; set; }
     }

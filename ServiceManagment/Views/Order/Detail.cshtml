@@ -3,6 +3,7 @@
 
 @{
 }
+
 <html>
     <head>
        @* add meta*@
@@ -13,6 +14,7 @@
         </div>
         <div class="container" style="margin-left: 20%; margin-top: 2%">
             <input type="text" asp-for="@Model.WorkerId" hidden/>
+
             <div class="row">
                 <div class="col-md-3">
 
@@ -61,8 +63,8 @@
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">&nbsp;</label>
-                    <a type="button" class="form-control btn btn-outline-info" asp-controller="Order"
-                        asp-action="DetailOrderPayment" asp-route-id="@Model.Id">Payment</a>
+                    <a type="button" class="form-control btn btn-outline-secondary" asp-controller="Order"
+                        asp-action="EditOrderPayment" asp-route-id="@Model.Id">Payment</a>
                 </div>
             </div>
             <div class="row mt-3">
