@@ -13,7 +13,7 @@
         <table class="table text-white" style="margin-top: 2%">
             <thead class="bg-white text-dark">
                 <tr>
-                    <th scope="col">Order status</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Added</th>
                     <th scope="col">Owner</th>
                     <th scope="col">Product type</th>
@@ -25,7 +25,18 @@
                 @foreach(var order in Model)
                 {   
                     <tr>
-                        <td>@order.OrderStatus.ToString()</td>
+                        @if(order.OrderStatus == ServiceManagment.Data.Enum.OrderStatus.New)
+                        {
+                            <td class="text-danger">@order.OrderStatus</td>
+                        }
+                        else if(order.OrderStatus == ServiceManagment.Data.Enum.OrderStatus.InProgress)
+                        {
+                            <td class="text-warning">@order.OrderStatus</td>
+                        }
+                        else
+                        {
+                            <td class="text-success">@order.OrderStatus</td>
+                        }
                         <td>@order.OrderAdded</td>
                         <td>@order.Customer.Name</td>
                         <td>@order.Product.ProductType.ToString()</td>

@@ -30,6 +30,7 @@ namespace ServiceManagment.Repository
         {
             return await _context.Services
                 .Where(x => x.PaymentId == id)
+                .OrderBy(i => i.Status)
                 .ToListAsync();
         }
 

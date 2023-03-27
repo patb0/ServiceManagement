@@ -66,7 +66,18 @@
                     <tr>
                         <th scope="row">@order.Id</th>
                         <td>@order.OrderAdded</td>
-                        <td class="text-danger">@order.OrderStatus</td>
+                        @if(order.OrderStatus == ServiceManagment.Data.Enum.OrderStatus.New)
+                        {
+                            <td class="text-danger">@order.OrderStatus</td>
+                        }
+                        else if(order.OrderStatus == ServiceManagment.Data.Enum.OrderStatus.InProgress)
+                        {
+                            <td class="text-warning">@order.OrderStatus</td>
+                        }
+                        else
+                        {
+                            <td class="text-success">@order.OrderStatus</td>
+                        }
                         <td>@order.Customer.Name</td>
                         <td>@order.Product.ProductType</td>
                         <td>@order.Product.ProducerName @order.Product.Model</td>

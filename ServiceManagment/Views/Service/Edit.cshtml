@@ -14,7 +14,7 @@
         <div class="text-center fs-1">
             <h1 class="display-3">Edit order</h1>
         </div>
-        <div class="container" style="margin-left: 25%">
+        <div class="container" style="margin-left: 38%">
             <form method="post" asp-action="Edit">
                 <input type="number" asp-for="@Model.Id" hidden/>
                 <div class="row">
@@ -22,15 +22,17 @@
                         <label class="form-label">Name</label>
                         <input type="text" class="form-control" asp-for="@Model.Name" />
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label">&nbsp;</label>
-                        <input type="submit" class="form-control btn-outline-success" value="Confirm"/>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
                         <label class="form-label">Price</label>
                         <input type="number" class="form-control" asp-for="@Model.Price" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">&nbsp;</label>
+                        <input type="submit" class="form-control btn btn-outline-success" value="Confirm"/>
                     </div>
                 </div>
             </form>

@@ -77,6 +77,10 @@
                                     asp-action="Edit" asp-route-id="@service.Id">Edit</a>
                             </td>
                             <td>
+                                <a type="button" class="btn btn-outline-danger btn-sm" asp-controller="Service"
+                                    asp-action="Delete" asp-route-id="@service.Id">Delete</a>
+                            </td>
+                            <td>
                                 @if(service.Status == ServiceManagment.Data.Enum.ServiceStatus.NotPaid)
                                 {
                                     <a type="button" class="btn btn-outline-info btn-sm" asp-controller="Service"
@@ -88,10 +92,7 @@
                                         asp-action="Paid" asp-route-id="@service.Id">Paid</a>
                                 }
                             </td>
-                            <td>
-                                <a type="button" class="btn btn-outline-danger btn-sm" asp-controller="Service"
-                                    asp-action="Delete" asp-route-id="@service.Id">Delete</a>
-                            </td>
+                            
                         </tr>   
                     }
                 }
