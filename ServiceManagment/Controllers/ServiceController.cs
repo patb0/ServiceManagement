@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
 using ServiceManagment.ViewModel;
 
 namespace ServiceManagment.Controllers
 {
+    [Authorize]
     public class ServiceController : Controller
     {
         private readonly IServiceRepository _serviceRepository;
@@ -93,6 +95,7 @@ namespace ServiceManagment.Controllers
         public async Task<IActionResult> Delete(int id) 
         { 
             var service = await _serviceRepository.GetServiceById(id);
+            var payment = await _paymentRepository.GetPaymentById(service.PaymentId);
 
             if (service != null) 
             {
@@ -103,6 +106,5 @@ namespace ServiceManagment.Controllers
 
             return View("Error");
         }
-
     }
 }

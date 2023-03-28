@@ -123,8 +123,6 @@ namespace ServiceManagment.Controllers
             }
 
             return View("Error");
-
-            //return customerDetail == null ? View("Error") : View(customerDetail);
         }
 
         [HttpGet]
@@ -204,24 +202,33 @@ namespace ServiceManagment.Controllers
             return View("Index");
         }
 
-        public async Task<IActionResult> Orders(int id)
+        public async Task<IActionResult> History(int id)
         {
-            var userOrders = await _customerRepository.GetAllOrdersByCustomerIdAsync(id);
+            double? toPay = 0;
+            double? paid = 0;
 
-            return View(userOrders);
-        }
+            var orders = await _customerRepository.GetAllOrdersByCustomerIdAsync(id);
+            var payments = await _customerRepository.GetAllPaymentByCustomerIdAsync(id);
 
-        public async Task<IActionResult> Payment(int id)
-        {
-            double? userToPay = 0;
-            var userPayments = await _customerRepository.GetAllPaymentByCustomerIdAsync(id);
-
-            foreach(var payment in userPayments)
+            if(orders != null || payments != null) 
             {
-                userToPay += payment.Payment.ToPay;
-            }
+				foreach (var payment in payments)
+				{
+					toPay += payment.Payment.ToPay;
+					paid += payment.Payment.Paid;
+				}
 
-            return View(userToPay);
+				var historyCustomerVM = new HistoryCustomerViewModel()
+				{
+					Orders = orders,
+					ToPay = toPay,
+					Paid = paid,
+				};
+
+                return View(historyCustomerVM);
+			}
+
+            return View("Error");
         }
 
         public async Task<IActionResult> ListCustomerByType(string customerType)

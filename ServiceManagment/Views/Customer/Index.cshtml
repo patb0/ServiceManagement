@@ -45,7 +45,7 @@
 			<thead class="bg-white text-dark">
 				<tr>
 					<th>ID</th>
-					<th>Add</th>
+					<th>Added</th>
 					<th>Type</th>
 					<th>Name</th>
 					<th>Group</th>
@@ -62,7 +62,14 @@
 					<tr>
 						<th scope="row">@customer.Id</th>
 						<td>@customer.UserAdded</td>
-						<td>@customer.CustomerType</td>
+						@if(customer.CustomerType == ServiceManagment.Data.Enum.CustomerType.Individual)
+						{
+						<td class="text-success">@customer.CustomerType</td>
+						}
+						else
+						{
+							<td class="text-danger">@customer.CustomerType</td>
+						}
 						<td>@customer.Name</td>
 						<td>@customer.CustomerGroup</td>
 						<td>@customer.Address.City</td>

@@ -19,12 +19,12 @@
 
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Assistant</label>
-                    <input type="text" class="form-control bg-dark border-1 border-info text-white" asp-for="@Model.WorkerName" readonly>
+                    <label class="form-text text-info">Assistant</label>
+                    <input type="text" class="form-control bg-dark text-white" asp-for="@Model.WorkerName" readonly>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label">&nbsp;</label>
-                    <a type="button" class="form-control btn btn-outline-info" asp-controller="Worker"
+                    <label class="form-text">&nbsp;</label>
+                    <a type="button" class="form-control btn btn-outline-light" asp-controller="Worker"
                         asp-action="Detail" asp-route-id="@Model.WorkerId">Profile</a>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                 <div class="col-md-2">
                     <label class="form-label">&nbsp;</label>
                     <a type="button" class="form-control btn btn-outline-info" asp-controller="Customer"
-                        asp-action="Orders" asp-route-id="@Model.Id">History</a>
+                        asp-action="History" asp-route-id="@Model.Id">History</a>
                 </div>
             </div>
             <div class="row mt-3">
@@ -77,8 +77,8 @@
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">&nbsp;</label>
-                    <a type="button" class="form-control btn btn-outline-warning" asp-controller="Customer"
-                        asp-action="Payment" asp-route-id="@Model.Id">Payments</a>
+                    <a type="submit" class="form-control btn btn-outline-danger" asp-controller="Customer"
+                        asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
                 </div>
             </div>
             <div class="row mt-3">
@@ -94,7 +94,6 @@
                             <input type="text" class="form-control" asp-for="@Model.Contact.EmailAddress" readonly>
                         </div>
                     </div>
-                    
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <label class="form-label">Phone number</label>
@@ -106,10 +105,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <label class="form-label">&nbsp;</label>
-                    <a type="submit" class="form-control btn btn-outline-danger" asp-controller="Customer"
-                        asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+            </div>
+            <div class="row mt-5 mb-5">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-3">
+
                 </div>
             </div>
             <div class="row mt-3">
@@ -122,7 +124,7 @@
                     <input type="text" class="form-control" asp-for="@Model.Address.PostalCode" readonly>
                 </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-3 mb-5">
                 <div class="col-md-3">
                     <label class="form-label">Street</label>
                     <input type="text" class="form-control" asp-for="@Model.Address.Street" readonly>

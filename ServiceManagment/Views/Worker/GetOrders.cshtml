@@ -26,6 +26,7 @@
 					<th>ID</th>
 					<th>Added</th>
 					<th>Name</th>
+					<th>Type</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -36,6 +37,7 @@
 						<th scope="row">@order.Id</th>
 						<td>@order.OrderAdded</td>
 						<td>@order.Product.ProducerName @order.Product.Model</td>
+						<td>@order.Product.ProductType</td>
 						<td>
 							<a type="button" class="btn btn-outline-success btn-sm" asp-controller="Order"
 								asp-action="Detail" asp-route-id="@order.Id">Detail</a>

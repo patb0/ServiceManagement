@@ -23,7 +23,7 @@ namespace ServiceManagment.Controllers
             _dbContext = dbContext;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -42,7 +42,7 @@ namespace ServiceManagment.Controllers
 
             if (workerExist != null)
             {
-                TempData["Error"] = "Worker about this email is now exist!";
+                TempData["Error"] = "Worker with this email is now exist!";
                 return View(registerWorkerVM);
             }
 
@@ -66,6 +66,7 @@ namespace ServiceManagment.Controllers
             return RedirectToAction("Index", "Customer");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {

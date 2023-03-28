@@ -182,7 +182,7 @@ namespace ServiceManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Contact", b =>
@@ -206,7 +206,7 @@ namespace ServiceManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contacts");
+                    b.ToTable("Contacts", (string)null);
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Customer", b =>
@@ -253,7 +253,7 @@ namespace ServiceManagment.Migrations
 
                     b.HasIndex("WorkerId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Order", b =>
@@ -292,7 +292,7 @@ namespace ServiceManagment.Migrations
 
                     b.HasIndex("WorkerId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Payment", b =>
@@ -311,7 +311,7 @@ namespace ServiceManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Product", b =>
@@ -350,7 +350,7 @@ namespace ServiceManagment.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Service", b =>
@@ -382,7 +382,7 @@ namespace ServiceManagment.Migrations
 
                     b.HasIndex("PaymentId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Worker", b =>

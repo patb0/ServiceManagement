@@ -156,7 +156,8 @@ namespace ServiceManagment.Controllers
                     order.Product = orderViewModel.Product;
                     if (order.OrderStatus == (OrderStatus)Enum.Parse(typeof(OrderStatus), OrderConstans.FINISH_STATUS))
                     {
-                        order.Payment.ToPay = 0;
+                        order.Payment.Paid += order.Payment.ToPay;
+						order.Payment.ToPay = 0;
                     }
 
                     _orderRepository.Update(order);

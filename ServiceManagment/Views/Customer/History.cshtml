@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ServiceManagment.Models.Order>
+﻿@model ServiceManagment.ViewModel.HistoryCustomerViewModel
 
 @{
 }
@@ -10,6 +10,16 @@
         <div class="text-center fs-1">
             <h1 class="display-3">Customer history</h1>
         </div>
+        <div class="row mb-3">
+                <div class="col-md-2 input-group-sm">
+                    <small class="help-block">To pay for orders</small>
+                    <input type="number" class="form-control" asp-for="@Model.ToPay" readonly/>
+                </div>
+                <div class="col-md-2 input-group-sm">
+                    <small class="help-block">Paid by customer</small>
+                    <input type="number" class="form-control" asp-for="@Model.Paid" readonly/>
+                </div>
+            </div>
         <table class="table text-white" style="margin-top: 2%">
             <thead class="bg-white text-dark">
                 <tr>
@@ -22,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(var order in Model)
+                @foreach(var order in Model.Orders)
                 {   
                     <tr>
                         @if(order.OrderStatus == ServiceManagment.Data.Enum.OrderStatus.New)

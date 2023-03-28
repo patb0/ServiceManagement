@@ -19,13 +19,13 @@
                 <div class="col-md-3">
 
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label">Added by</label>
-                    <input type="text" class="form-control bg-dark border-1 border-secondary text-white" asp-for="@Model.WorkerName" readonly>
+                <div class="col-md-3 ">
+                    <label class="form-text text-info">Added by</label>
+                    <input type="text" class="form-control bg-dark text-white" asp-for="@Model.WorkerName" readonly>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label">&nbsp;</label>
-                    <a type="button" class="form-control btn btn-outline-secondary" asp-controller="Worker"
+                    <label class="form-text">&nbsp;</label>
+                    <a type="button" class="form-control btn btn-outline-light" asp-controller="Worker"
                         asp-action="Detail" asp-route-id="@Model.WorkerId">Profile</a>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">&nbsp;</label>
-                    <a type="button" class="form-control btn btn-outline-secondary" asp-controller="Order"
+                    <a type="button" class="form-control btn btn-outline-info" asp-controller="Order"
                         asp-action="EditOrderPayment" asp-route-id="@Model.Id">Payment</a>
                 </div>
             </div>
@@ -99,7 +99,7 @@
             </div>
             <div class="row mt-3">
                 <div class="col-md-3">
-                    <label class="form-label">Product Description</label>
+                    <label class="form-label">Product description</label>
                     <textarea type="text" class="form-control" asp-for="@Model.Product.Description" style="resize: none" rows="4" readonly>
 
                     </textarea>
@@ -118,58 +118,3 @@
         </div>
     </body>
 </html>
-
-@*<a type="button" class="btn btn-danger" asp-controller="Order"
-    asp-action="Edit" asp-route-id="@Model.Id">Edit order</a>
-
-<a type="button" class="btn btn-danger" asp-controller="Customer"
-    asp-action="Detail" asp-route-id="@Model.CustomerId">Show customer profile</a>
-
-<a type="button" class="btn btn-danger" asp-controller="Order"
-    asp-action="DetailOrderPayment" asp-route-id="@Model.Id">Payments</a>
-<br />
-<div class="form-group">
-    <label class="form-label">ID</label>
-    <input type="text" class="form-control" asp-for="@Model.Id" readonly/>
-</div>
-<div class="form-group">
-    <label class="form-label">All cost</label>
-    <input type="number" class="form-control" asp-for="@Model.Payment.ToPay" readonly/>
-</div>
-<div class="form-group">
-    <label class="form-label">Order added</label>
-    <input type="date" class="form-control" asp-for="@Model.OrderAdded" readonly/>
-</div>
-<div class="form-group">
-    <label class="form-label">Status</label>
-    <input type="text" class="form-control" asp-for="@Model.OrderStatus" readonly/>
-</div>
-<div class="form-group">
-    <label class="form-label">Owner</label>
-    <input type="text" class="form-control" asp-for="@Model.Customer.Name" readonly/>
-</div>
-<div class="form-group">
-    <label class="form-label">Type</label>
-    <input type="text" class="form-control" asp-for="@Model.Product.ProductType" readonly/>
-</div>
-<div class="form-group">
-    <label class="form-label">Name</label>
-    <input type="text" class="form-control" asp-for="@Model.Product.ProducerName" readonly/>
-</div>
-<div class="form-group">
-    <label class="form-label">Model</label>
-    <input type="text" class="form-control" asp-for="@Model.Product.Model" readonly/>
-</div>
-<div class="form-group">
-    <label class="form-label">Serial number</label>
-    <input type="text" class="form-control" asp-for="@Model.Product.SerialNumber" readonly/>
-</div>
-<div class="form-group">
-    <label class="form-label">Fault</label>
-    <input type="text" class="form-control" asp-for="@Model.Product.Fault" readonly/>
-</div>
-<div class="form-group">
-    <label class="form-label">Description</label>
-    <input type="text" class="form-control" asp-for="@Model.Product.Description" readonly/>
-</div>*@
-

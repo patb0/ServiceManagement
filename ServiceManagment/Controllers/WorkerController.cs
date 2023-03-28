@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
@@ -6,6 +7,7 @@ using ServiceManagment.ViewModel;
 
 namespace ServiceManagment.Controllers
 {
+	[Authorize]
 	public class WorkerController : Controller
 	{
 		private readonly IWorkerRepository _workerRepository;
@@ -17,6 +19,7 @@ namespace ServiceManagment.Controllers
 			_userManager = userManager;
         }
 
+		[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
 		{
 			var workers = await _workerRepository.GetAllWorkers();
@@ -40,7 +43,8 @@ namespace ServiceManagment.Controllers
 			return View(detailWorkerVM);
 		}
 
-		[HttpGet]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
 		public async Task<IActionResult> Edit(string id)
 		{
 			var worker = await _workerRepository.GetWorkerById(id);
@@ -90,7 +94,8 @@ namespace ServiceManagment.Controllers
 			return RedirectToAction("Index");
 		}
 
-		[HttpGet]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
 		public async Task<IActionResult> Delete(string id)
 		{
 			var worker = await _workerRepository.GetWorkerById(id);
@@ -108,7 +113,8 @@ namespace ServiceManagment.Controllers
 			return View("Error");
 		}
 
-		[HttpPost]
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
 		public async Task<IActionResult> DeleteWorker(string id)
 		{
 			var worker = await _userManager.FindByIdAsync(id);
