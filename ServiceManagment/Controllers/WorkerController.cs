@@ -11,11 +11,16 @@ namespace ServiceManagment.Controllers
 	public class WorkerController : Controller
 	{
 		private readonly IWorkerRepository _workerRepository;
+		private readonly ICustomerRepository _customerRepository;
+		private readonly IOrderRepository _orderRepository;
 		private readonly UserManager<Worker> _userManager;
 
-        public WorkerController(IWorkerRepository workerRepository, UserManager<Worker> userManager)
+        public WorkerController(IWorkerRepository workerRepository, ICustomerRepository customerRepository,
+			IOrderRepository orderRepository, UserManager<Worker> userManager)
         {
             _workerRepository = workerRepository;
+			_customerRepository = customerRepository;
+			_orderRepository = orderRepository;
 			_userManager = userManager;
         }
 
@@ -132,14 +137,14 @@ namespace ServiceManagment.Controllers
 
 		public async Task<IActionResult> GetCustomers(string id)
 		{
-			var customers = await _workerRepository.GetAllCustomersByWorkerId(id);
+			var customers = await _customerRepository.GetAllCustomersByWorkerId(id);
 
 			return View(customers);
 		}
 
 		public async Task<IActionResult> GetOrders(string id)
 		{
-			var orders = await _workerRepository.GetAllOrdersByWorkerId(id);
+			var orders = await _orderRepository.GetAllOrdersByWorkerId(id);
 
 			return View(orders);
 		}

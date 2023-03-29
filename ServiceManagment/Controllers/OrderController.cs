@@ -12,12 +12,17 @@ namespace ServiceManagment.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IPaymentRepository _paymentRepository;
         private readonly IServiceRepository _serviceRepository;
+        private readonly IWorkerRepository _workerRepository;
 
-        public OrderController(IOrderRepository orderRepository, IServiceRepository paymentRepository)
+        public OrderController(IOrderRepository orderRepository, IServiceRepository serviceRepository, IPaymentRepository paymentRepository,
+            IWorkerRepository workerRepository)
         {
             _orderRepository = orderRepository;
-            _serviceRepository = paymentRepository;
+            _serviceRepository = serviceRepository;
+            _paymentRepository = paymentRepository;
+            _workerRepository = workerRepository;
         }
 
         public async Task<IActionResult> Index(string searchKey)
@@ -97,7 +102,7 @@ namespace ServiceManagment.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             var order = await _orderRepository.GetOrderByIdAsync(id);
-            var workerName = await _orderRepository.GetWorkerById(order.WorkerId);
+            var workerName = await _workerRepository.GetWorkerNameById(order.WorkerId);
 
             if(order != null)
             {
@@ -154,11 +159,16 @@ namespace ServiceManagment.Controllers
                 {
                     order.OrderStatus = orderViewModel.OrderStatus;
                     order.Product = orderViewModel.Product;
+
                     if (order.OrderStatus == (OrderStatus)Enum.Parse(typeof(OrderStatus), OrderConstans.FINISH_STATUS))
                     {
-                        order.Payment.Paid += order.Payment.ToPay;
-						order.Payment.ToPay = 0;
-                    }
+                        var payment = await _paymentRepository.GetPaymentByOrderId(id);
+
+                        payment.Paid += order.Payment.ToPay;
+                        payment.ToPay = 0;
+
+						_paymentRepository.Update(payment);
+					}
 
                     _orderRepository.Update(order);
 
@@ -183,13 +193,21 @@ namespace ServiceManagment.Controllers
         public async Task<IActionResult> EditOrderPayment (int id)
         {
             var orderPayment = await _orderRepository.GetPaymentByOrderIdAsync(id);
-            var services = await _serviceRepository.GetAllServicesByPaymentId(orderPayment.PaymentId);
+            var services = await _serviceRepository.GetAllServicesByPaymentId(orderPayment.Payment.Id);
             
             if( orderPayment != null)
             {
-                var editOrderPaymentVM = new EditOrderPaymentViewModel()
+				if (orderPayment.OrderStatus == OrderStatus.Finished)
+				{
+					foreach (var service in services)
+					{
+						service.Status = ServiceStatus.Paid;
+					}
+				}
+
+				var editOrderPaymentVM = new EditOrderPaymentViewModel()
                 {
-                    PaymentId = orderPayment.PaymentId,
+                    PaymentId = orderPayment.Payment.Id,
                     OrderId = id,
                     ToPay = orderPayment.Payment.ToPay,
                     Paid = orderPayment.Payment.Paid,
@@ -219,7 +237,6 @@ namespace ServiceManagment.Controllers
                     var service = new Service()
                     {
                         PaymentId = editOrderPaymentVM.PaymentId,
-                        OrderId = id,
                         Name = editOrderPaymentVM.Name,
                         Price = editOrderPaymentVM.Price,
                         Status = ServiceStatus.NotPaid,

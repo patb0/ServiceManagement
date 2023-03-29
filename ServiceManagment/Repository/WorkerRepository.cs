@@ -23,30 +23,22 @@ namespace ServiceManagment.Repository
 			throw new NotImplementedException();
 		}
 
-        public async Task<IEnumerable<Customer>> GetAllCustomersByWorkerId(string id)
-        {
-            return await _context.Customers
-				.Where(x => x.WorkerId == id)
-				.ToListAsync();
-        }
-
-        public async Task<IEnumerable<Order>> GetAllOrdersByWorkerId(string id)
-        {
-            return await _context.Orders
-				.Include(i => i.Product)
-				.Where(x => x.WorkerId == id)
-				.ToListAsync();
-        }
-
         public async Task<IEnumerable<Worker>> GetAllWorkers()
 		{
 			return await _context.Users
+				.OrderBy(x => x.CreatedAt)
 				.ToListAsync();
 		}
 
 		public async Task<Worker> GetWorkerById(string id)
 		{
 			return await _context.Users.FindAsync(id);
+		}
+
+		public async Task<string> GetWorkerNameById(string id)
+		{
+			return await _context.Users.Where(x => x.Id == id)
+				.Select(i => i.Name).FirstOrDefaultAsync();
 		}
 
 		public bool Save()

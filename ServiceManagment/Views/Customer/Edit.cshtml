@@ -44,6 +44,7 @@
                         <label class="form-label">Description</label>
                         <textarea type="text" class="form-control" asp-for="@Model.Description" style="resize: none" rows="4">
                         </textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="col-md-3">
                         <div class="row">

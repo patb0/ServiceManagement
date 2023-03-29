@@ -28,6 +28,8 @@
                     <th scope="col">Owner</th>
                     <th scope="col">Product type</th>
                     <th scope="col">Product name</th>
+                    <th scope="col">To pay</th>
+                    <th scope="col">Paid</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -51,6 +53,8 @@
                         <td>@order.Customer.Name</td>
                         <td>@order.Product.ProductType.ToString()</td>
                         <td>@order.Product.ProducerName @order.Product.Model</td>
+                        <td>@order.Payment.ToPay</td>
+                        <td>@order.Payment.Paid</td>
                         <td>
                             <a type="submit" class="btn btn-outline-success btn-sm" asp-controller="Order" asp-action="Detail" asp-route-id="@order.Id">Detail</a>
                         </td>

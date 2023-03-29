@@ -31,7 +31,7 @@ namespace ServiceManagment.Controllers
                 _serviceRepository.Update(service);
                 _paymentRepository.Update(payment);
 
-                return RedirectToAction("EditOrderPayment", "Order", new {@id = service.OrderId});
+                return RedirectToAction("EditOrderPayment", "Order", new {@id = service.Payment.OrderId});
             }
 
             return View("Error");
@@ -85,7 +85,7 @@ namespace ServiceManagment.Controllers
                     _serviceRepository.Update(service);
                     _paymentRepository.Update(payment);
 
-                    return RedirectToAction("EditOrderPayment", "Order", new {@id = service.OrderId});
+                    return RedirectToAction("EditOrderPayment", "Order", new {@id = service.Payment.OrderId});
                 }
             }
 
@@ -99,9 +99,18 @@ namespace ServiceManagment.Controllers
 
             if (service != null) 
             {
+                if(service.Status == Data.Enum.ServiceStatus.NotPaid)
+                {
+					payment.ToPay -= service.Price;
+				}
+                else if(service.Status == Data.Enum.ServiceStatus.Paid)
+                {
+                    payment.Paid -= service.Price;
+                }
+
                 _serviceRepository.Delete(service);
 
-                return RedirectToAction("EditOrderPayment", "Order", new { @id = service.OrderId});
+                return RedirectToAction("EditOrderPayment", "Order", new { @id = payment.OrderId});
             }
 
             return View("Error");

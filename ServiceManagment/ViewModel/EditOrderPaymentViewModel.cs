@@ -9,6 +9,7 @@ namespace ServiceManagment.ViewModel
         public int PaymentId { get; set; }
         public int OrderId { get; set; }
 
+        [StringLength(40)]
         [Required(ErrorMessage = "Name cannot be empty")]
         public string Name { get; set; }
 

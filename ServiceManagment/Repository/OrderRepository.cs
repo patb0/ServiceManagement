@@ -94,17 +94,38 @@ namespace ServiceManagment.Repository
                 .ToListAsync();
         }
 
-        public async Task<string> GetWorkerById(string id)
-        {
-            return await _context.Users.Where(x => x.Id == id)
-                .Select(i => i.Name).FirstOrDefaultAsync();
-        }
-
         public async Task<IEnumerable<Service>> GetAllServicesByPaymentId(int id)
         {
             return await _context.Services
                 .Where(i => i.Id == id)
                 .ToListAsync();
         }
-    }
+
+		public async Task<IEnumerable<Order>> GetAllOrdersByCustomerId(int id)
+		{
+			return await _context.Orders
+				.Include(i => i.Product)
+				.Include(j => j.Customer)
+				.Include(k => k.Payment)
+				.Where(x => x.CustomerId == id)
+				.OrderBy(x => x.OrderStatus)
+				.ToListAsync();
+		}
+
+		public async Task<IEnumerable<Order>> GetAllPaymentByCustomerId(int id)
+		{
+			return await _context.Orders
+				.Include(i => i.Payment)
+				.Where(x => x.CustomerId == id)
+				.ToListAsync();
+		}
+
+		public async Task<IEnumerable<Order>> GetAllOrdersByWorkerId(string id)
+		{
+			return await _context.Orders
+                .Include(i => i.Product)
+                .Where(x => x.WorkerId == id)
+                .ToListAsync();
+        }
+	}
 }

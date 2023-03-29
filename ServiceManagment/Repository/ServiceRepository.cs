@@ -37,6 +37,7 @@ namespace ServiceManagment.Repository
         public async Task<Service> GetServiceById(int id)
         {
             return await _context.Services
+                .Include(x => x.Payment)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 

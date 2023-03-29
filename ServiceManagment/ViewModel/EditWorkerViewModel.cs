@@ -7,6 +7,8 @@ namespace ServiceManagment.ViewModel
         public string Id { get; set; }		
         [Required(ErrorMessage = "Email address cannot be empty!")]
 		public string EmailAddress { get; set; }
+
+		[StringLength(40)]
 		public string? Name { get; set; }
 		public DateTime CreatedAt { get; set; }
 

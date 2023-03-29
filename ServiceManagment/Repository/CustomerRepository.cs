@@ -32,7 +32,9 @@ namespace ServiceManagment.Repository
             return await _context.Customers
                 .Include(i => i.Address)
                 .Include(j => j.Contact)
-                .ToListAsync();
+				.OrderByDescending(y => y.UserAdded.Date)
+				.ThenByDescending(y => y.UserAdded.TimeOfDay)
+				.ToListAsync();
         }
 
         public async Task<IEnumerable<Customer>> GetAllCustomersBySearchKeyAsync(string searchKey)
@@ -44,6 +46,8 @@ namespace ServiceManagment.Repository
                 || x.Address.City.Contains(searchKey)
                 || x.Contact.PhoneNumber.Contains(searchKey)
                 || x.Contact.EmailAddress.Contains(searchKey))
+                .OrderByDescending(y => y.UserAdded.Date)
+                .ThenByDescending(y => y.UserAdded.TimeOfDay)
                 .ToListAsync();
         }
 
@@ -53,40 +57,25 @@ namespace ServiceManagment.Repository
                 .Include(i => i.Address)
                 .Include (j => j.Contact)
                 .Where(x => x.CustomerType == (CustomerType)Enum.Parse(typeof(CustomerType), customerType))
-                .ToListAsync();
+                .OrderByDescending(y => y.UserAdded.Date)
+				.ThenByDescending(y => y.UserAdded.TimeOfDay)
+				.ToListAsync();
         }
 
-        public async Task<IEnumerable<Order>> GetAllOrdersByCustomerIdAsync(int id)
-        {
-            return await _context.Orders
-                .Include(i => i.Product)
-                .Include(j => j.Customer)
-                .Include(k => k.Payment)
-                .Where(x => x.CustomerId == id)
-                .ToListAsync();
-        }
+		public async Task<IEnumerable<Customer>> GetAllCustomersByWorkerId(string id)
+		{
+		    return await _context.Customers
+				.Where(x => x.WorkerId == id)
+				.ToListAsync();
+		}
 
-        public async Task<IEnumerable<Order>> GetAllPaymentByCustomerIdAsync(int id)
-        {
-            return await _context.Orders
-                .Include(i => i.Payment)
-                .Where(x => x.CustomerId == id)
-                .ToListAsync();
-        }
-
-        public async Task<Customer> GetCustomerByIdAsync(int id)
+		public async Task<Customer> GetCustomerByIdAsync(int id)
         {
             return await _context.Customers
                 .Include(i => i.Address)
                 .Include(j => j.Contact)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
-
-		public async Task<string> GetWorkerNameById(string id)
-		{
-            return await _context.Users.Where(x => x.Id == id)
-                .Select(i => i.Name).FirstOrDefaultAsync();
-		}
 
 		public bool Save()
         {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceManagment.Common;
+using ServiceManagment.Data.Enum;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
 using ServiceManagment.ViewModel;
@@ -11,10 +12,14 @@ namespace ServiceManagment.Controllers
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IWorkerRepository _workerRepository;
 
-        public CustomerController(ICustomerRepository customerRepository)
+        public CustomerController(ICustomerRepository customerRepository, IOrderRepository orderRepository, IWorkerRepository workerRepository)
         {
             _customerRepository = customerRepository;
+            _orderRepository = orderRepository;
+            _workerRepository = workerRepository;
         }
 
         public async Task<IActionResult> Index(string searchKey)
@@ -89,7 +94,7 @@ namespace ServiceManagment.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             var customer = await _customerRepository.GetCustomerByIdAsync(id);
-            var workerName = await _customerRepository.GetWorkerNameById(customer.WorkerId);
+            var workerName = await _workerRepository.GetWorkerNameById(customer.WorkerId);
 
             if(customer != null)
             {
@@ -151,7 +156,7 @@ namespace ServiceManagment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditCustomerViewModel editCustomerVM)
+        public async Task<IActionResult> Edit(int id, EditCustomerViewModel editCustomerVM)
         {
             if(!ModelState.IsValid)
             {
@@ -159,21 +164,33 @@ namespace ServiceManagment.Controllers
             }
             else
             {
-                var customer = new Customer
+                var customer = await _customerRepository.GetCustomerByIdAsync(id);
+                if(customer != null)
                 {
-                    Id = editCustomerVM.Id,
-                    Name = editCustomerVM.Name,
-                    NIP = editCustomerVM.NIP,
-                    Description = editCustomerVM.Description,
-                    CustomerGroup = editCustomerVM.CustomerGroup,
-                    CustomerType = editCustomerVM.CustomerType,
-                    Address = editCustomerVM.Address,
-                    Contact = editCustomerVM.Contact,
-                };
+                    customer.Id = editCustomerVM.Id;
+                    customer.Name = editCustomerVM.Name;
+                    customer.NIP = editCustomerVM.NIP;
+                    customer.Description = editCustomerVM.Description;
+                    customer.CustomerGroup = editCustomerVM.CustomerGroup;
+                    customer.CustomerType = editCustomerVM.CustomerType;
+                    customer.Address = editCustomerVM.Address;
+                    customer.Contact = editCustomerVM.Contact;
 
-                _customerRepository.Update(customer);
+					_customerRepository.Update(customer);
 
-                return RedirectToAction("Index");
+					return RedirectToAction("Index");
+				}
+                //var customer = new Customer
+                //{
+                //    Id = editCustomerVM.Id,
+                //    Name = editCustomerVM.Name,
+                //    NIP = editCustomerVM.NIP,
+                //    Description = editCustomerVM.Description,
+                //    CustomerGroup = editCustomerVM.CustomerGroup,
+                //    CustomerType = editCustomerVM.CustomerType,
+                //    Address = editCustomerVM.Address,
+                //    Contact = editCustomerVM.Contact,
+                //}; 
             }
 
             return View("Error");
@@ -207,8 +224,8 @@ namespace ServiceManagment.Controllers
             double? toPay = 0;
             double? paid = 0;
 
-            var orders = await _customerRepository.GetAllOrdersByCustomerIdAsync(id);
-            var payments = await _customerRepository.GetAllPaymentByCustomerIdAsync(id);
+            var orders = await _orderRepository.GetAllOrdersByCustomerId(id);
+            var payments = await _orderRepository.GetAllPaymentByCustomerId(id); 
 
             if(orders != null || payments != null) 
             {

@@ -15,7 +15,9 @@ namespace ServiceManagment.ViewModel
 
         [RegularExpression(@"\d{10}", ErrorMessage = "Wrong NIP number!")]
         public string? NIP { get; set; }
-        public string? Description { get; set; }
+
+        [StringLength(100)]
+		public string? Description { get; set; }
         public CustomerGroup CustomerGroup { get; set; }
         public CustomerType CustomerType { get; set; }
         public Address Address { get; set; }

@@ -23,13 +23,20 @@ namespace ServiceManagment.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<Payment>? GetPaymentById(int id)
+
+		public async Task<Payment>? GetPaymentById(int id)
         {
             return await _context.Payments
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public bool Save()
+		public async Task<Payment> GetPaymentByOrderId(int id)
+		{
+            return await _context.Payments
+                .FirstOrDefaultAsync(x => x.OrderId == id);
+		}
+
+		public bool Save()
         {
             var saved = _context.SaveChanges();
 

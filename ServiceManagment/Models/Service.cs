@@ -15,9 +15,5 @@ namespace ServiceManagment.Models
         [ForeignKey("Payment")]
         public int PaymentId { get; set; }
         public Payment? Payment { get; set; }
-
-        [ForeignKey("Order")]
-        public int? OrderId { get; set; }
-        public Order? Order { get; set; }
     }
 }

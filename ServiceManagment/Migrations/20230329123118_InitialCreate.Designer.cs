@@ -12,7 +12,7 @@ using ServiceManagment.Data;
 namespace ServiceManagment.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230328192055_InitialCreate")]
+    [Migration("20230329123118_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -276,9 +276,6 @@ namespace ServiceManagment.Migrations
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -288,8 +285,6 @@ namespace ServiceManagment.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("PaymentId");
 
                     b.HasIndex("ProductId");
 
@@ -306,6 +301,9 @@ namespace ServiceManagment.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<double?>("Paid")
                         .HasColumnType("float");
 
@@ -313,6 +311,9 @@ namespace ServiceManagment.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.ToTable("Payments");
                 });
@@ -367,9 +368,6 @@ namespace ServiceManagment.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PaymentId")
                         .HasColumnType("int");
 
@@ -380,8 +378,6 @@ namespace ServiceManagment.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("PaymentId");
 
@@ -544,12 +540,6 @@ namespace ServiceManagment.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceManagment.Models.Payment", "Payment")
-                        .WithMany()
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ServiceManagment.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -562,26 +552,29 @@ namespace ServiceManagment.Migrations
 
                     b.Navigation("Customer");
 
-                    b.Navigation("Payment");
-
                     b.Navigation("Product");
 
                     b.Navigation("Worker");
                 });
 
-            modelBuilder.Entity("ServiceManagment.Models.Service", b =>
+            modelBuilder.Entity("ServiceManagment.Models.Payment", b =>
                 {
                     b.HasOne("ServiceManagment.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
+                        .WithOne("Payment")
+                        .HasForeignKey("ServiceManagment.Models.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ServiceManagment.Models.Service", b =>
+                {
                     b.HasOne("ServiceManagment.Models.Payment", "Payment")
                         .WithMany("Services")
                         .HasForeignKey("PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
 
                     b.Navigation("Payment");
                 });
@@ -589,6 +582,12 @@ namespace ServiceManagment.Migrations
             modelBuilder.Entity("ServiceManagment.Models.Customer", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("ServiceManagment.Models.Order", b =>
+                {
+                    b.Navigation("Payment")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ServiceManagment.Models.Payment", b =>
