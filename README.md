@@ -2,7 +2,7 @@
 ## $\Large \mathcal{\color{green}{\fbox{Service Management | ASP.NET Core MVC App} \}}$
 
 ## General info
-Service Management is a web application that is used to manage the computer service,<br> but can be convert for different services (phone service, car service, etc.)
+Service Management is a web application that is used to manage the computer repair service.<br>It can be easily converted to different kinds of services such as:  phone repair service, car repair service, etc.
 
 ## Technologies:
 Project is created with: <br /><br />
