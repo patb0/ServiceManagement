@@ -17,7 +17,7 @@ namespace ServiceManagment.Repository
 
         public bool Add(Customer customer)
         {
-            _context.Add(customer);
+			_context.Add(customer);
             return Save();
         }
 

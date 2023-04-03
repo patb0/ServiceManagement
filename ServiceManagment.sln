@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceManagment", "ServiceManagment\ServiceManagment.csproj", "{83FB25EA-66FD-4423-A4A4-153FA8820E30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceManagment", "ServiceManagment\ServiceManagment.csproj", "{83FB25EA-66FD-4423-A4A4-153FA8820E30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

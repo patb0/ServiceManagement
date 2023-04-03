@@ -9,7 +9,6 @@ namespace ServiceManagment.Interfaces
         Task<IEnumerable<Customer>> GetAllCustomersBySearchKeyAsync(string searchKey);
         Task<IEnumerable<Customer>> GetAllCustomersByTypeAsync(string customerType);
 		Task<IEnumerable<Customer>> GetAllCustomersByWorkerId(string id);
-		//Task<string> GetWorkerNameById(string id);
         bool Add(Customer customer);
         bool Update(Customer customer);
         bool Delete(Customer customer);

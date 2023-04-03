@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceManagment.Common;
+using ServiceManagment.Data;
 using ServiceManagment.Data.Enum;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
@@ -14,12 +15,17 @@ namespace ServiceManagment.Controllers
         private readonly ICustomerRepository _customerRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IWorkerRepository _workerRepository;
+        private readonly ApplicationDbContext _context;
 
-        public CustomerController(ICustomerRepository customerRepository, IOrderRepository orderRepository, IWorkerRepository workerRepository)
+        public CustomerController(ICustomerRepository customerRepository,
+            IOrderRepository orderRepository,
+            IWorkerRepository workerRepository,
+            ApplicationDbContext context)
         {
             _customerRepository = customerRepository;
             _orderRepository = orderRepository;
             _workerRepository = workerRepository;
+            _context = context;
         }
 
         public async Task<IActionResult> Index(string searchKey)
@@ -27,6 +33,7 @@ namespace ServiceManagment.Controllers
             if(!String.IsNullOrEmpty(searchKey))
             {
                 var customers = await _customerRepository.GetAllCustomersBySearchKeyAsync(searchKey);
+
                 if(customers.Count() != 0)
                 {
 					ViewData["CurrentKey"] = searchKey;
@@ -61,34 +68,59 @@ namespace ServiceManagment.Controllers
             {
                 return View(addCustomerVM);
             }
-            else
+            
+            using(var transaction = _context.Database.BeginTransaction())
             {
-                var customer = new Customer
+                try
                 {
-                    Id = addCustomerVM.Id,
-                    Name = addCustomerVM.Name,
-                    NIP = addCustomerVM.NIP,
-                    UserAdded = DateTime.Now,
-                    Description = addCustomerVM.Description,
-                    CustomerGroup = addCustomerVM.CustomerGroup,
-                    CustomerType = addCustomerVM.CustomerType,
-                    Address = addCustomerVM.Address,
-                    Contact = addCustomerVM.Contact,
-                    Orders = addCustomerVM.Orders,
-                    WorkerId = addCustomerVM.WorkerId,
-                };
+					var customer = new Customer
+					{
+						Name = addCustomerVM.Name,
+						NIP = addCustomerVM.NIP,
+						UserAdded = DateTime.Now,
+						Description = addCustomerVM.Description,
+						CustomerGroup = addCustomerVM.CustomerGroup,
+						CustomerType = addCustomerVM.CustomerType,
+						Address = new Address
+						{
+							City = addCustomerVM.Address.City,
+							PostalCode = addCustomerVM.Address.PostalCode,
+							Street = addCustomerVM.Address.Street,
+							FlatNumber = addCustomerVM.Address.FlatNumber,
 
-                _customerRepository.Add(customer);
+						},
+						Contact = new Contact
+						{
+							PhoneNumber = addCustomerVM.Contact.PhoneNumber,
+							SecondPhoneNumber = addCustomerVM.Contact.SecondPhoneNumber,
+							EmailAddress = addCustomerVM.Contact.EmailAddress,
+						},
+						Orders = addCustomerVM.Orders,
+						WorkerId = addCustomerVM.WorkerId,
+					};
+					_customerRepository.Add(customer);
 
-                if (operation == ((uint)CustomerConstans.ONLY_ADD_CUSTOMER))
+                    transaction.Commit();
+
+					return operation == (uint)CustomerConstans.ONLY_ADD_CUSTOMER
+						? RedirectToAction("Index")
+						: RedirectToAction("Create", "Order", new { @id = customer.Id });
+				}
+                catch(Exception)
                 {
-                    return RedirectToAction("Index");
-                }
+                    transaction.Rollback();
 
-                return RedirectToAction("Create", "Order", new { @id = customer.Id });
+                    TempData["Result"] = "Error occured while adding customer to database";
+				}
+
+                return View();
+                //if (operation == ((uint)CustomerConstans.ONLY_ADD_CUSTOMER))
+                //{
+                //	return RedirectToAction("Index");
+                //}
+
+                //return RedirectToAction("Create", "Order", new { @id = customer.Id });
             }
-
-            return View("Error");
         }
 
         public async Task<IActionResult> Detail(int id)
@@ -145,8 +177,19 @@ namespace ServiceManagment.Controllers
                     Description = customer.Description,
                     CustomerGroup = customer.CustomerGroup,
                     CustomerType = customer.CustomerType,
-                    Address = customer.Address,
-                    Contact = customer.Contact,
+                    Address = new AddressViewModel
+                    {
+                        City = customer.Address.City,
+                        PostalCode = customer.Address.PostalCode,
+                        Street = customer.Address.Street,
+                        FlatNumber = customer.Address.FlatNumber,
+                    },
+                    Contact = new ContactViewModel
+                    {
+                        PhoneNumber = customer.Contact.PhoneNumber,
+                        SecondPhoneNumber = customer.Contact.SecondPhoneNumber,
+                        EmailAddress = customer.Contact.EmailAddress,
+                    },
                 };
 
                 return View(editCustomerVM);
@@ -162,38 +205,41 @@ namespace ServiceManagment.Controllers
             {
                 return View(editCustomerVM);
             }
-            else
+
+            using(var transaction = _context.Database.BeginTransaction())
             {
-                var customer = await _customerRepository.GetCustomerByIdAsync(id);
-                if(customer != null)
+                try
                 {
-                    customer.Id = editCustomerVM.Id;
+                    var customer = await _customerRepository.GetCustomerByIdAsync(id);
+
                     customer.Name = editCustomerVM.Name;
                     customer.NIP = editCustomerVM.NIP;
                     customer.Description = editCustomerVM.Description;
                     customer.CustomerGroup = editCustomerVM.CustomerGroup;
                     customer.CustomerType = editCustomerVM.CustomerType;
-                    customer.Address = editCustomerVM.Address;
-                    customer.Contact = editCustomerVM.Contact;
 
-					_customerRepository.Update(customer);
+                    customer.Address.City = editCustomerVM.Address.City;
+                    customer.Address.PostalCode = editCustomerVM.Address.PostalCode;
+                    customer.Address.Street = editCustomerVM.Address.Street;
+                    customer.Address.FlatNumber = editCustomerVM.Address.FlatNumber;
 
-					return RedirectToAction("Index");
-				}
-                //var customer = new Customer
-                //{
-                //    Id = editCustomerVM.Id,
-                //    Name = editCustomerVM.Name,
-                //    NIP = editCustomerVM.NIP,
-                //    Description = editCustomerVM.Description,
-                //    CustomerGroup = editCustomerVM.CustomerGroup,
-                //    CustomerType = editCustomerVM.CustomerType,
-                //    Address = editCustomerVM.Address,
-                //    Contact = editCustomerVM.Contact,
-                //}; 
+                    customer.Contact.PhoneNumber = editCustomerVM.Contact.PhoneNumber;
+                    customer.Contact.SecondPhoneNumber = editCustomerVM.Contact.SecondPhoneNumber;
+                    customer.Contact.EmailAddress = editCustomerVM.Contact.EmailAddress;
+
+                    _customerRepository.Update(customer);
+
+                    transaction.Commit();
+
+                    return RedirectToAction("Index");
+                }
+                catch(Exception)
+                {
+                    transaction.Rollback();
+                }
+
+                return View(editCustomerVM);
             }
-
-            return View("Error");
         }
 
         [HttpGet]

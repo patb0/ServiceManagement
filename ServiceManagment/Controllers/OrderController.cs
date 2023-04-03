@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceManagment.Common;
+using ServiceManagment.Data;
 using ServiceManagment.Data.Enum;
 using ServiceManagment.Interfaces;
 using ServiceManagment.Models;
@@ -15,14 +16,19 @@ namespace ServiceManagment.Controllers
         private readonly IPaymentRepository _paymentRepository;
         private readonly IServiceRepository _serviceRepository;
         private readonly IWorkerRepository _workerRepository;
+        private readonly ApplicationDbContext _context;
 
-        public OrderController(IOrderRepository orderRepository, IServiceRepository serviceRepository, IPaymentRepository paymentRepository,
-            IWorkerRepository workerRepository)
+        public OrderController(IOrderRepository orderRepository,
+            IServiceRepository serviceRepository,
+            IPaymentRepository paymentRepository,
+            IWorkerRepository workerRepository,
+            ApplicationDbContext context)
         {
             _orderRepository = orderRepository;
             _serviceRepository = serviceRepository;
             _paymentRepository = paymentRepository;
             _workerRepository = workerRepository;
+            _context = context;
         }
 
         public async Task<IActionResult> Index(string searchKey)
@@ -68,35 +74,46 @@ namespace ServiceManagment.Controllers
             {
                 return View(orderViewModel);
             }
-            else
+            using(var transation = _context.Database.BeginTransaction())
             {
-                var order = new Order()
+                try
                 {
-                    OrderStatus = Data.Enum.OrderStatus.New,
-                    OrderAdded = DateTime.Now,
-                    CustomerId = orderViewModel.CustomerId,
-                    Product = new Product
+                    var order = new Order()
                     {
-                        ProductType = orderViewModel.Product.ProductType,
-                        ProducerName = orderViewModel.Product.ProducerName,
-                        Model = orderViewModel.Product.Model,
-                        SerialNumber = orderViewModel.Product.SerialNumber,
-                        Fault = orderViewModel.Product.Fault,
-                        Description = orderViewModel.Product.Description,
-                    },
-                    Payment = new Payment
-                    {
-                        ToPay = orderViewModel.Payment.ToPay > 0 ? orderViewModel.Payment.ToPay : 0,
-                        Paid = 0,
-                    },
-                    WorkerId = orderViewModel.WorkerId,
-                };
+                        OrderStatus = Data.Enum.OrderStatus.New,
+                        OrderAdded = DateTime.Now,
+                        CustomerId = orderViewModel.CustomerId,
+                        Product = new Product
+                        {
+                            ProductType = orderViewModel.Product.ProductType,
+                            ProducerName = orderViewModel.Product.ProducerName,
+                            Model = orderViewModel.Product.Model,
+                            SerialNumber = orderViewModel.Product.SerialNumber,
+                            Fault = orderViewModel.Product.Fault,
+                            Description = orderViewModel.Product.Description,
+                        },
+                        Payment = new Payment
+                        {
+                            ToPay = orderViewModel.Payment.ToPay > 0 ? orderViewModel.Payment.ToPay : 0,
+                            Paid = 0,
+                        },
+                        WorkerId = orderViewModel.WorkerId,
+                    };
 
-                _orderRepository.Add(order);
+                    _orderRepository.Add(order);
 
-                return RedirectToAction("Index");
+                    transation.Commit();
+
+                    return RedirectToAction("Index");
+                }
+                catch(Exception)
+                {
+                    transation.Rollback();
+
+                    TempData["Result"] = "Error occured while adding customer to database";
+                }
+                return View();
             }
-            return View("Error");
         }
 
         public async Task<IActionResult> Detail(int id)
@@ -151,32 +168,42 @@ namespace ServiceManagment.Controllers
             {
                 return View(orderViewModel);
             }
-            else
+            
+            using(var transation = _context.Database.BeginTransaction())
             {
-                var order = await _orderRepository.GetOrderByIdAsync(id);
-
-                if (order != null)
+                try
                 {
-                    order.OrderStatus = orderViewModel.OrderStatus;
-                    order.Product = orderViewModel.Product;
+                    var order = await _orderRepository.GetOrderByIdAsync(id);
 
-                    if (order.OrderStatus == (OrderStatus)Enum.Parse(typeof(OrderStatus), OrderConstans.FINISH_STATUS))
+                    if (order != null)
                     {
-                        var payment = await _paymentRepository.GetPaymentByOrderId(id);
+                        order.OrderStatus = orderViewModel.OrderStatus;
+                        order.Product = orderViewModel.Product;
 
-                        payment.Paid += order.Payment.ToPay;
-                        payment.ToPay = 0;
+                        if (order.OrderStatus == (OrderStatus)Enum.Parse(typeof(OrderStatus), OrderConstans.FINISH_STATUS))
+                        {
+                            var payment = await _paymentRepository.GetPaymentByOrderId(id);
 
-						_paymentRepository.Update(payment);
-					}
+                            payment.Paid += order.Payment.ToPay;
+                            payment.ToPay = 0;
 
-                    _orderRepository.Update(order);
+                            _paymentRepository.Update(payment);
+                        }
 
-                    return RedirectToAction("Index");
+                        _orderRepository.Update(order);
+
+                        transation.Commit();
+
+                        return RedirectToAction("Index");
+                    }
                 }
-            }
+                catch (Exception)
+                {
+                    transation.Rollback();
+                }
 
-            return View("Error");
+                return View(orderViewModel);
+            }        
         }
 
         public async Task<IActionResult> ListOrdersByStatus (string status, string searchKey)

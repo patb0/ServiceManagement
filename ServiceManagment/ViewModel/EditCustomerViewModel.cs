@@ -20,7 +20,7 @@ namespace ServiceManagment.ViewModel
 		public string? Description { get; set; }
         public CustomerGroup CustomerGroup { get; set; }
         public CustomerType CustomerType { get; set; }
-        public Address Address { get; set; }
-        public Contact Contact { get; set; }
+        public AddressViewModel Address { get; set; }
+        public ContactViewModel Contact { get; set; }
     }
 }

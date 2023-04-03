@@ -13,6 +13,12 @@
 	    <div class="text-center fs-1">
             <h1 class="display-3">Add new customer</h1>
         </div>
+        <div class="row mt-1">
+            @if(TempData["Result"] != null)
+            {
+                <span class="text-danger">@TempData["Result"]</span>
+            }
+        </div>
         <div class="container" style="margin: 15%; margin-top: 2%;">
             <form method="post" asp-action="Add">
                 <input type="text" asp-for="WorkerId" hidden/>

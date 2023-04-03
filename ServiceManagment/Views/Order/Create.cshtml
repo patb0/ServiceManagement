@@ -12,6 +12,12 @@
         <div class="text-center fs-1">
             <h1 class="display-3">Add new order</h1>
         </div>
+        <div class="row mt-2">
+            @if(ViewBag["Result"] != null)
+            {
+                <span class="text-danger">@ViewBag["Result"]</span>
+            }
+        </div>
         <div class="container" style="margin: 19%; margin-top: 2%;">
             <form method="post" asp-action="Create">
                 <input type="text" asp-for="@Model.WorkerId" hidden/>
